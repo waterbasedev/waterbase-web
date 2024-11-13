@@ -1,0 +1,52 @@
+[
+    {
+      "id": "jfFy1zkB",
+      "title": "Folder 1",
+      "type": "folder",
+      "children": [
+        {
+          "id": "xaf8vEVr",
+          "title": "Subfolder 1",
+          "type": "folder",
+          "children": [
+            {
+              "id": "iBP52Xq1",
+              "title": "Document 1",
+              "type": "document",
+              "content": "<h1>Document 1</h1>\n<p>Content here TESTER...</p>"
+            }
+          ]
+        },
+        {
+          "id": "52pSn9wg",
+          "title": "Document 2",
+          "type": "document",
+          "content": "<h1>Document 2</h1>\n<p>Content here...</p>"
+        }
+      ]
+    },
+    {
+      "id": "KZYqXlgS",
+      "title": "test doc lalala",
+      "type": "document",
+      "content": "<h1>New Document</h1>\n<p>Start writing here...</p>"
+    },
+    {
+      "id": "rHrBwPBb",
+      "title": "New Document 3",
+      "type": "document",
+      "content": "<h1>New Document</h1>\n<p>Start writing here...</p>"
+    },
+    {
+      "id": "WvimpXtU",
+      "title": "New Document 4",
+      "type": "document",
+      "content": "<h1>New Document</h1>\n<p>Start writing here...</p>"
+    },
+    {
+      "id": 5,
+      "title": "New Document 5",
+      "type": "document",
+      "content": "<p>Start writing here...</p>"
+    }
+  ]

@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Plus, Edit, Trash2, Search, Folder, FileText } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import ReactMde from 'react-mde';
-import Showdown from 'showdown';
-import 'react-mde/lib/styles/css/react-mde-all.css';
+import ReactHtmlParser from 'react-html-parser';
+import Tiptap from './tiptap';
 import './App.css';
 
 function App() {
@@ -15,7 +11,10 @@ function App() {
   const [searchTerm, setSearchTerm] = React.useState('');
   const [editContent, setEditContent] = React.useState('');
   const [editTitle, setEditTitle] = React.useState('');
-  const [selectedTab, setSelectedTab] = React.useState('write');
+
+  useEffect(() => {
+    console.log('Selected Document:', selectedDoc);
+  }, [selectedDoc]);
 
   useEffect(() => {
     fetch('http://localhost:5000/documents')
@@ -23,14 +22,21 @@ function App() {
       .then(data => setDocuments(data));
   }, []);
 
-  const converter = new Showdown.Converter();
+  const generateRandomString = (length) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+  };
 
   const handleNewDocument = () => {
     const newDoc = {
-      id: documents.length + 1,
+      id: generateRandomString(8),
       title: `New Document ${documents.length + 1}`,
       type: 'document',
-      content: '# New Document\n\nStart writing here...'
+      content: '<p>Start writing here...</p>'
     };
     fetch('http://localhost:5000/documents', {
       method: 'POST',
@@ -92,12 +98,8 @@ function App() {
 
   const collapseFolder = (folder) => {
     const folderElement = document.getElementById(folder.id);
-    if (folderElement) {
-      const childrenElement = folderElement.querySelector('.folder-children');
-      if (childrenElement) {
-        childrenElement.style.display = childrenElement.style.display === 'none' ? 'block' : 'none';
-      }
-    }
+    const childrenElement = folderElement.querySelector('.folder-children');
+    childrenElement.classList.toggle('collapsed');
   };
 
   const renderDocuments = (docs) => {
@@ -116,6 +118,7 @@ function App() {
       } else {
         return (
           <div 
+            id={doc.id}
             key={doc.id} 
             className={`document-item ${selectedDoc?.id === doc.id ? 'selected' : ''}`} 
             onClick={() => setSelectedDoc(doc)}
@@ -128,90 +131,84 @@ function App() {
   };
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="knowledge-base">
-        <div className="side-panel">
-          <div className="panel-header">
-            <img src="/bulb.svg" alt="Logo" className="header-logo"/>
-            <text>WaterBase</text>
-          </div>
-          <div className="search-container">
-            <Search className="search-icon" size={20} />
-            <input
-              type="text"
-              placeholder="Search documents..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className="search-input"
-            />
-          </div>
-
-          <div className="documents-list">
-            {renderDocuments(filteredDocs)}
-          </div>
-
-          <button className="new-doc-button" onClick={handleNewDocument}>
-            <Plus size={20} />
-            New Document
-          </button>
+    <div className="knowledge-base">
+      <div className="side-panel">
+        <div className="panel-header">
+          <img src="/bulb.svg" alt="Logo" className="header-logo"/>
+          <text>WaterBase</text>
+        </div>
+        <div className="search-container">
+          <Search className="search-icon" size={20} />
+          <input
+            type="text"
+            placeholder="Search documents..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="search-input"
+          />
         </div>
 
-        <div className="document-viewer">
-          {selectedDoc ? (
-            <>
-              <div className="document-header">
-                <h2>{selectedDoc.title}</h2>
-                <div className="document-actions">
-                  <button className="edit-button" onClick={handleEdit}>
-                    <Edit size={18} />
-                    Edit
+        <div className="documents-list">
+          {renderDocuments(filteredDocs)}
+        </div>
+
+        <button className="new-doc-button" onClick={handleNewDocument}>
+          <Plus size={20} />
+          New Document
+        </button>
+      </div>
+
+      <div className="document-viewer">
+        {selectedDoc ? (
+          <>
+            <div className="document-header">
+              <h2>{selectedDoc.title}</h2>
+              <div className="document-actions">
+                <button className="edit-button" onClick={handleEdit}>
+                  <Edit size={18} />
+                  Edit
+                </button>
+                <button className="delete-button" onClick={handleDelete}>
+                  <Trash2 size={18} />
+                  Delete
+                </button>
+              </div>
+            </div>
+            {isEditing ? (
+              <div className="editor-container">
+                <input
+                  type="text"
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  className="title-editor"
+                />
+
+                <div className="document-editor">
+                  <Tiptap content={editContent} onChange={setEditContent} />
+                </div>
+                
+                <div className="editor-actions">
+                  <button className="cancel-button" onClick={() => setIsEditing(false)}>
+                    Cancel
                   </button>
-                  <button className="delete-button" onClick={handleDelete}>
-                    <Trash2 size={18} />
-                    Delete
+                  <button className="save-button" onClick={handleSave}>
+                    Save
                   </button>
                 </div>
               </div>
-              {isEditing ? (
-                <div className="editor-container">
-                  <input
-                    type="text"
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
-                    className="title-editor"
-                  />
-                  <ReactMde
-                    value={editContent}
-                    onChange={setEditContent}
-                    selectedTab={selectedTab}
-                    onTabChange={setSelectedTab}
-                    generateMarkdownPreview={markdown =>
-                      Promise.resolve(converter.makeHtml(markdown))
-                    }
-                  />
-                  <div className="editor-actions">
-                    <button className="cancel-button" onClick={() => setIsEditing(false)}>
-                      Cancel
-                    </button>
-                    <button className="save-button" onClick={handleSave}>
-                      Save
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="document-content">
-                  <ReactMarkdown>{selectedDoc.content}</ReactMarkdown>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="no-selection">
-              Select a document to view
-            </div>
-          )}
-        </div>
+            ) : (
+              <div className="document-content">
+                {ReactHtmlParser(selectedDoc.content)}
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="no-selection">
+            Select a document to view
+          </div>
+        )}
       </div>
-    </DndProvider>
+    </div>
   );
 }
 

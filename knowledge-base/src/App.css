@@ -110,6 +110,10 @@
   font-size: 24px;
 }
 
+.document-editor {
+  border: 1px solid #f80f06;
+}
+
 .document-actions {
   display: flex;
   gap: 8px;
