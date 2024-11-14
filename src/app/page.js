@@ -20,14 +20,30 @@ export default function KnowledgeBase() {
     useEffect(() => {
         fetch('/api/documents')
             .then(response => response.json())
-            .then(data => setDocuments(data));
+            .then(data => {
+                const nestDocuments = (docs, parentId = null) => {
+                    return docs
+                        .filter(doc => doc.parent_id === parentId)
+                        .map(doc => ({ ...doc, children: nestDocuments(docs, doc.id) }));
+                };
+                setDocuments(nestDocuments(data));
+            });
     }, []);
 
     const converter = new Showdown.Converter();
 
+    function generateRandomString(length) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+    }
+
     const handleNewDocument = () => {
         const newDoc = {
-            id: documents.length + 1,
+            id: generateRandomString(6),
             title: `New Document ${documents.length + 1}`,
             type: 'document',
             content: '# New Document\n\nStart writing here...'
@@ -43,12 +59,49 @@ export default function KnowledgeBase() {
             .then(data => setDocuments([...documents, data]));
     };
 
+    const refreshDocuments = () => {
+        fetch('/api/documents')
+            .then(response => response.json())
+            .then(data => {
+                const nestDocuments = (docs, parentId = null) => {
+                    return docs
+                        .filter(doc => doc.parent_id === parentId)
+                        .map(doc => ({ ...doc, children: nestDocuments(docs, doc.id) }));
+                };
+                setDocuments(nestDocuments(data));
+            })
+            .catch(error => {
+                console.error('Error fetching documents:', error);
+                alert('Failed to fetch documents. Please try again.');
+            });
+    };
+
+    const handleNewFolder = () => {
+        const newFolder = {
+            id: generateRandomString(6),
+            title: `New Folder ${documents.length + 1}`,
+            type: 'folder',
+            content: '', // Folders typically don't have content
+            parent_id: null // Adjust as needed if you want to support nested folders
+        };
+        fetch('/api/documents', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newFolder)
+        })
+            .then(response => response.json())
+            .then(data => setDocuments([...documents, data]));
+    };
+
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
     };
 
     const filteredDocs = documents.filter(doc =>
-        doc.title.toLowerCase().includes(searchTerm.toLowerCase())
+        doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        doc.content.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleEdit = () => {
@@ -59,38 +112,55 @@ export default function KnowledgeBase() {
 
     const handleSave = () => {
         const updatedDoc = { ...selectedDoc, title: editTitle, content: editContent };
-        fetch(`/api/documents`, {  // No need to use dynamic ID here for now
+        fetch(`/api/documents`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(updatedDoc)
         })
-            .then(response => response.json())
-            .then(data => {
-                setDocuments(documents.map(doc =>
-                    doc.id === selectedDoc.id
-                        ? data
-                        : doc
-                ));
-                setSelectedDoc(data);
-                setIsEditing(false);
-            });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update document');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Re-fetch and update the documents
+            refreshDocuments();
+            setSelectedDoc(data);
+            setIsEditing(false);
+        })
+        .catch(error => {
+            console.error('Error updating document:', error);
+            alert('Failed to update document. Please try again.');
+        });
     };
 
     const handleDelete = () => {
         if (window.confirm('Are you sure you want to delete this document?')) {
-            fetch(`/api/documents`, { // No dynamic ID needed for now
+            fetch(`/api/documents`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ id: selectedDoc.id })
             })
-                .then(() => {
-                    setDocuments(documents.filter(doc => doc.id !== selectedDoc.id));
-                    setSelectedDoc(null);
-                });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to delete document');
+                }
+                return response.json();
+            })
+            .then(() => {
+                // Re-fetch and update the documents
+                refreshDocuments();
+                setSelectedDoc(null);
+            })
+            .catch(error => {
+                console.error('Error deleting document:', error);
+                alert('Failed to delete document. Please try again.');
+            });
         }
     };
 
@@ -104,32 +174,116 @@ export default function KnowledgeBase() {
         }
     };
 
-    const renderDocuments = (docs) => {
-        return docs.map(doc => {
-            if (doc.type === 'folder') {
-                return (
-                    <div id={doc.id} key={doc.id} className="folder">
-                        <div className="folder-item" onClick={() => collapseFolder(doc)}>
-                            <Folder size={20} /> {doc.title}
-                        </div>
-                        <div className="folder-children">
-                            {renderDocuments(doc.children)}
-                        </div>
-                    </div>
-                );
-            } else {
-                return (
-                    <div
-                        key={doc.id}
-                        className={`document-item ${selectedDoc?.id === doc.id ? 'selected' : ''}`}
-                        onClick={() => setSelectedDoc(doc)}
-                    >
-                        <FileText size={20} /> {doc.title}
-                    </div>
-                );
-            }
-        });
+    const handleDragStart = (e, item) => {
+        e.dataTransfer.setData('item', JSON.stringify(item));
+        console.log('Item to drag:', item);
     };
+
+    const handleDrop = (e, dropFolder) => {
+        const docToUpdate = JSON.parse(e.dataTransfer.getData('item'));
+        console.log('dropping item:', docToUpdate.title, 'into folder:', dropFolder.title);
+    
+        if (docToUpdate) {
+            // Prevent dropping a folder into itself
+            if (docToUpdate.id === dropFolder.id) {
+                console.log('Cannot drop', docToUpdate.title, 'into itself.');
+                return;
+            }
+    
+            // Prevent dropping a folder into one of its descendants
+            const isDescendant = (parent, child) => {
+                if (parent.id === child.parent_id) {
+                    return true;
+                }
+                const parentFolder = documents.find(doc => doc.id === child.parent_id);
+                return parentFolder ? isDescendant(parent, parentFolder) : false;
+            };
+    
+            if (docToUpdate.type === 'folder' && isDescendant(docToUpdate, dropFolder)) {
+                alert('Cannot drop a folder into one of its descendants.');
+                return;
+            }
+    
+            const updatedDoc = { ...docToUpdate, parent_id: dropFolder.id };
+    
+            // Update the document in the database
+            fetch(`/api/documents`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedDoc)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update document');
+                }
+                return response.json();
+            })
+            .then(() => {
+                // Re-fetch and update the documents
+                refreshDocuments();
+            })
+            .catch(error => {
+                console.error('Error updating document:', error);
+                alert('Failed to update document. Please try again.');
+            });
+        }
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+    };
+
+const renderDocuments = (docs) => {
+    const folders = docs.filter(doc => doc.type === 'folder');
+    const documents = docs.filter(doc => doc.type !== 'folder');
+
+    return (
+        <>
+            {folders.map(folder => (
+                <div
+                    id={folder.id}
+                    key={folder.id}
+                    className="folder"
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, folder)}
+                    onDrop={(e) => handleDrop(e, folder)}
+                    onDragOver={handleDragOver}
+                >
+                    <div className="folder-item" onClick={() => collapseFolder(folder)}>
+                        <Folder size={20} /> <strong>{folder.title}</strong>
+                    </div>
+                    <div className="folder-children">
+                        {renderDocuments(folder.children || [])}
+                    </div>
+                </div>
+            ))}
+            {documents.map(doc => (
+                <div
+                    key={doc.id}
+                    className="document-item"
+                    draggable
+                    onDragStart={(e) => {
+                        e.stopPropagation();
+                        handleDragStart(e, doc);
+                    }}
+                    onDrop={(e) => {
+                        e.stopPropagation();
+                        handleDrop(e, doc);
+                    }}
+                    onDragOver={(e) => {
+                        e.stopPropagation();
+                        handleDragOver(e);
+                    }}
+                    onClick={() => setSelectedDoc(doc)}
+                >
+                    <FileText size={20} />{doc.title}
+                </div>
+            ))}
+        </>
+    );
+};
 
     return (
         <div className="knowledge-base">
@@ -152,6 +306,11 @@ export default function KnowledgeBase() {
                 <div className="documents-list">
                     {renderDocuments(filteredDocs)}
                 </div>
+
+                <button className="new-folder-button" onClick={handleNewFolder}>
+                    <Plus size={20} />
+                    New Folder
+                </button>
 
                 <button className="new-doc-button" onClick={handleNewDocument}>
                     <Plus size={20} />
