@@ -1,0 +1,214 @@
+.knowledge-base {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  .side-panel {
+    width: 256px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+  }
+  
+  .panel-header {
+    padding: 10px;
+    font-size: 32pt;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .search-container {
+    padding: 16px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .search-icon {
+    color: #6b7280;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .documents-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 8px;
+  }
+  
+  .folder {
+    border-radius: 5px;
+    padding: 8px 16px;
+  
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .folder-children collapsed {
+    background-color: green;
+    border-radius: 5px;
+    padding: 8px 16px;
+  
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .document-item {
+    border-radius: 5px;
+    padding: 8px 16px;
+  
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .document-item:hover {
+    background-color: red;
+  }
+  
+  .document-item.selected {
+    background-color: #e5e7eb;
+    color: #1f2937;
+  }
+  
+  .new-doc-button {
+    margin: 16px;
+    padding: 8px 16px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .new-doc-button:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .document-viewer {
+    flex: 1;
+    padding: 24px;
+    background-color: white;
+    overflow-y: auto;
+  }
+  
+  .document-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-size: 24px;
+  }
+  
+  .document-actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .edit-button, .delete-button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .edit-button {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+  }
+  
+  .edit-button:hover {
+    background-color: #e5e7eb;
+  }
+  
+  .delete-button {
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+  }
+  
+  .delete-button:hover {
+    background-color: #fecaca;
+  }
+  
+  .editor-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .markdown-editor {
+    width: 100%;
+    height: 400px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-family: monospace;
+    resize: vertical;
+  }
+  
+  .editor-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  
+  .cancel-button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .save-button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+  }
+  
+  .save-button:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .no-selection {
+    text-align: center;
+    color: #6b7280;
+    margin-top: 80px;
+  }
+  
+  .document-content {
+    white-space: wrap;
+    line-height: 1.6;
+  }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+  
