@@ -110,9 +110,8 @@ export default function KnowledgeBase() {
         setEditTitle(selectedDoc.title);
     };
 
-    const handleSave = () => {
-        const updatedDoc = { ...selectedDoc, title: editTitle, content: editContent };
-        fetch(`/api/documents`, {
+    const updateDocument = (updatedDoc) => {
+        return fetch(`/api/documents`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -125,16 +124,24 @@ export default function KnowledgeBase() {
             }
             return response.json();
         })
-        .then(data => {
+        .then(() => {
             // Re-fetch and update the documents
             refreshDocuments();
-            setSelectedDoc(data);
-            setIsEditing(false);
         })
         .catch(error => {
             console.error('Error updating document:', error);
             alert('Failed to update document. Please try again.');
         });
+    }
+
+    const handleSave = () => {
+        const updatedDoc = { ...selectedDoc, title: editTitle, content: editContent };
+        updateDocument(updatedDoc)
+        .then(data => {
+            // Re-fetch and update the documents
+            setSelectedDoc(data);
+            setIsEditing(false);
+        })
     };
 
     const handleDelete = () => {
@@ -179,55 +186,67 @@ export default function KnowledgeBase() {
         console.log('Item to drag:', item);
     };
 
-    const handleDrop = (e, dropFolder) => {
+    const findDocfromId = (docId, docs = documents) => {
+        for (const doc of docs) {
+            if (doc.id === docId) {
+                return doc;
+            }
+            // Recursively search for the document in the child documents, if any
+            if (doc.children) {
+                const foundDoc = findDocfromId(docId, doc.children);
+                if (foundDoc) {
+                    return foundDoc;
+                }
+            }
+        }
+    };
+
+
+    const handleDrop = (e, dropTarget) => {
         const docToUpdate = JSON.parse(e.dataTransfer.getData('item'));
-        console.log('dropping item:', docToUpdate.title, 'into folder:', dropFolder.title);
+        console.log('dropping item:', docToUpdate.title, 'into target:', dropTarget.title);
+        console.log('Documents:', documents);
     
         if (docToUpdate) {
             // Prevent dropping a folder into itself
-            if (docToUpdate.id === dropFolder.id) {
+            if (docToUpdate.id === dropTarget.id) {
                 console.log('Cannot drop', docToUpdate.title, 'into itself.');
                 return;
             }
     
-            // Prevent dropping a folder into one of its descendants
-            const isDescendant = (parent, child) => {
-                if (parent.id === child.parent_id) {
-                    return true;
-                }
-                const parentFolder = documents.find(doc => doc.id === child.parent_id);
-                return parentFolder ? isDescendant(parent, parentFolder) : false;
-            };
+            if (docToUpdate.type === 'folder' && docToUpdate.children) {
+                // Prevent dropping a folder into one of its descendants
+                const isDescendant = (parent, child) => {
+                    if (parent.id === child.parent_id) {
+                        return true;
+                    }
+                    const parentFolder = findDocfromId(child.parent_id);
+                    return parentFolder ? isDescendant(parent, parentFolder) : false;
+                };
     
-            if (docToUpdate.type === 'folder' && isDescendant(docToUpdate, dropFolder)) {
-                alert('Cannot drop a folder into one of its descendants.');
-                return;
+                if (docToUpdate.type === 'folder' && isDescendant(docToUpdate, dropTarget)) {
+                    alert('Cannot drop a folder into one of its descendants.');
+                    return;
+                }
+            }
+            
+            // Check if the drop target is a document
+            if (dropTarget.type === 'document') {
+                // Find the parent folder of the target document
+                const parentFolder = findDocfromId(dropTarget.parent_id);
+                console.log('Parent folder:', dropTarget.parent_id, parentFolder);
+                if (parentFolder) {
+                    dropTarget = parentFolder;
+                } else {
+                    alert('Cannot drop a document into another document.');
+                    return;
+                }
             }
     
-            const updatedDoc = { ...docToUpdate, parent_id: dropFolder.id };
+            const updatedDoc = { ...docToUpdate, parent_id: dropTarget.id };
     
             // Update the document in the database
-            fetch(`/api/documents`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedDoc)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to update document');
-                }
-                return response.json();
-            })
-            .then(() => {
-                // Re-fetch and update the documents
-                refreshDocuments();
-            })
-            .catch(error => {
-                console.error('Error updating document:', error);
-                alert('Failed to update document. Please try again.');
-            });
+            updateDocument(updatedDoc)
         }
     };
 
@@ -247,9 +266,18 @@ const renderDocuments = (docs) => {
                     key={folder.id}
                     className="folder"
                     draggable
-                    onDragStart={(e) => handleDragStart(e, folder)}
-                    onDrop={(e) => handleDrop(e, folder)}
-                    onDragOver={handleDragOver}
+                    onDragStart={(e) => {
+                        e.stopPropagation();
+                        handleDragStart(e, folder);
+                    }}
+                    onDrop={(e) => {
+                        e.stopPropagation();
+                        handleDrop(e, folder);
+                    }}
+                    onDragOver={(e) => {
+                        e.stopPropagation();
+                        handleDragOver(e);
+                    }}
                 >
                     <div className="folder-item" onClick={() => collapseFolder(folder)}>
                         <Folder size={20} /> <strong>{folder.title}</strong>
@@ -285,6 +313,19 @@ const renderDocuments = (docs) => {
     );
 };
 
+const handleDropOutside = (e) => {
+    e.preventDefault();
+    const docToUpdate = JSON.parse(e.dataTransfer.getData('item'));
+    console.log('Dropping item outside:', docToUpdate.title);
+
+    if (docToUpdate) {
+        const updatedDoc = { ...docToUpdate, parent_id: null };
+
+        // Update the document in the database
+        updateDocument(updatedDoc)
+    }
+};
+
     return (
         <div className="knowledge-base">
             <div className="side-panel">
@@ -303,7 +344,11 @@ const renderDocuments = (docs) => {
                     />
                 </div>
 
-                <div className="documents-list">
+                <div 
+                    className="documents-list"
+                    onDrop={handleDropOutside}
+                    onDragOver={(e) => e.preventDefault()}
+                >
                     {renderDocuments(filteredDocs)}
                 </div>
 

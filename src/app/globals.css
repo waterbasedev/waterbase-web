@@ -68,8 +68,6 @@ code {
   .folder {
     border-radius: 5px;
     padding-left: 8px;
-
-  
     cursor: pointer;
     transition: background-color 0.2s;
   }
