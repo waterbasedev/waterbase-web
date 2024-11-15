@@ -72,6 +72,15 @@ code {
     transition: background-color 0.2s;
   }
 
+  .folder-item {
+    display: flex;
+    align-items: center;
+    justify-content: normal;
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
   .folder-children {
     border-left: 3px solid #cccccc;
   }
@@ -79,6 +88,9 @@ code {
   .document-item {
     border-radius: 5px;
     padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: normal;
   
     cursor: pointer;
     transition: background-color 0.2s;

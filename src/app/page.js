@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Plus, Edit, Trash2, Search, Folder, FileText } from 'lucide-react';
+import { Plus, Minus, Edit, Trash2, Search, Folder, FileText } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import ReactMde from 'react-mde';
 import Showdown from 'showdown';
@@ -16,6 +16,7 @@ export default function KnowledgeBase() {
     const [editContent, setEditContent] = React.useState('');
     const [editTitle, setEditTitle] = React.useState('');
     const [selectedTab, setSelectedTab] = React.useState('write');
+    const [collapsedFolders, setCollapsedFolders] = React.useState({});
 
     useEffect(() => {
         fetch('/api/documents')
@@ -122,26 +123,33 @@ export default function KnowledgeBase() {
             if (!response.ok) {
                 throw new Error('Failed to update document');
             }
-            return response.json();
+            return response.json(); // Parse the JSON response to get the updated document data
         })
-        .then(() => {
+        .then(data => {
             // Re-fetch and update the documents
             refreshDocuments();
+            return data; // Return the updated document data
         })
         .catch(error => {
             console.error('Error updating document:', error);
             alert('Failed to update document. Please try again.');
         });
     }
-
+    
     const handleSave = () => {
         const updatedDoc = { ...selectedDoc, title: editTitle, content: editContent };
         updateDocument(updatedDoc)
         .then(data => {
-            // Re-fetch and update the documents
-            setSelectedDoc(data);
-            setIsEditing(false);
+            if (data) {
+                // Set the active document to the updated document
+                setSelectedDoc(data);
+                setIsEditing(false);
+            }
         })
+        .catch(error => {
+            console.error('Error saving document:', error);
+            alert('Failed to save document. Please try again.');
+        });
     };
 
     const handleDelete = () => {
@@ -172,13 +180,10 @@ export default function KnowledgeBase() {
     };
 
     const collapseFolder = (folder) => {
-        const folderElement = document.getElementById(folder.id);
-        if (folderElement) {
-            const childrenElement = folderElement.querySelector('.folder-children');
-            if (childrenElement) {
-                childrenElement.style.display = childrenElement.style.display === 'none' ? 'block' : 'none';
-            }
-        }
+        setCollapsedFolders(prevState => ({
+            ...prevState,
+            [folder.id]: !prevState[folder.id]
+        }));
     };
 
     const handleDragStart = (e, item) => {
@@ -238,8 +243,8 @@ export default function KnowledgeBase() {
                 if (parentFolder) {
                     dropTarget = parentFolder;
                 } else {
-                    alert('Cannot drop a document into another document.');
-                    return;
+                    // Set parent_id to null if there is no parent folder
+                    dropTarget = { id: null };
                 }
             }
     
@@ -281,8 +286,13 @@ const renderDocuments = (docs) => {
                 >
                     <div className="folder-item" onClick={() => collapseFolder(folder)}>
                         <Folder size={20} /> <strong>{folder.title}</strong>
+                        {collapsedFolders[folder.id] ? (
+                            <Plus size={20} style={{ float: 'right' }} />
+                        ) : (
+                            <Minus size={20} style={{ float: 'right' }} />
+                        )}
                     </div>
-                    <div className="folder-children">
+                    <div className="folder-children" style={{ display: collapsedFolders[folder.id] ? 'none' : 'block' }}>
                         {renderDocuments(folder.children || [])}
                     </div>
                 </div>
