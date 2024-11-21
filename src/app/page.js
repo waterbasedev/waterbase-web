@@ -349,7 +349,7 @@ export default function KnowledgeBase() {
             <div className="side-panel">
                 <div className="panel-header">
                     <img src="/bulb.svg" alt="Logo" className="header-logo" />
-                    <text>WaterBase</text>
+                    <text>WaterBased</text>
                 </div>
                 <div className="search-container">
                     <Search className="search-icon" size={20} />
