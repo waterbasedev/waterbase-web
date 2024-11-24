@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Plus, Minus, Edit, Trash2, Search, Folder, FileText } from 'lucide-react';
+import { Plus, ChevronDown, Edit, Trash2, Search, Folder, FileText } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import ReactMde from 'react-mde';
 import Showdown from 'showdown';
@@ -292,13 +292,11 @@ export default function KnowledgeBase() {
                             handleDragOver(e);
                         }}
                     >
-                        <div className="folder-item" onClick={() => collapseFolder(folder)}>
+                        <div className="folder-item" onClick={() => setSelectedDoc(folder)}>
+                            <button className='folder-collapse' onClick={(e) => { e.stopPropagation(); collapseFolder(folder); }} style={{ float: 'right', transition: 'transform 0.3s' }}>
+                                <ChevronDown size={20} style={{ transform: collapsedFolders[folder.id] ? 'rotate(-90deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }} />
+                            </button>
                             <Folder size={20} /> <strong>{folder.title}</strong>
-                            {collapsedFolders[folder.id] ? (
-                                <Plus size={20} style={{ float: 'right' }} />
-                            ) : (
-                                <Minus size={20} style={{ float: 'right' }} />
-                            )}
                         </div>
                         <div className="folder-children" style={{ display: collapsedFolders[folder.id] ? 'none' : 'block' }}>
                             {renderDocuments(folder.children || [])}

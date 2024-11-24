@@ -72,6 +72,16 @@ code {
     transition: background-color 0.2s;
   }
 
+  .folder-collapse {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .folder-item {
     display: flex;
     align-items: center;
