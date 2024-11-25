@@ -7,6 +7,7 @@ import ReactMde from 'react-mde';
 import Showdown from 'showdown';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 import './globals.css';
+import DocumentPanel from './DocumentPanel';
 
 export default function KnowledgeBase() {
     const [documents, setDocuments] = React.useState([]);
@@ -17,6 +18,7 @@ export default function KnowledgeBase() {
     const [editTitle, setEditTitle] = React.useState('');
     const [selectedTab, setSelectedTab] = React.useState('write');
     const [collapsedFolders, setCollapsedFolders] = React.useState({});
+    const [secondDoc, setSecondDoc] = React.useState(null);
 
     useEffect(() => {
         const fetchDocuments = async () => {
@@ -214,7 +216,6 @@ export default function KnowledgeBase() {
         }
     };
 
-
     const handleDrop = (e, dropTarget) => {
         const docToUpdate = JSON.parse(e.dataTransfer.getData('item'));
         console.log('dropping item:', docToUpdate.title, 'into target:', dropTarget.title);
@@ -342,6 +343,17 @@ export default function KnowledgeBase() {
         }
     };
 
+    const openDocWin = async (docId) => {
+        try {
+            const secondDocument = findDocfromId(docId);
+            setSecondDoc(secondDocument);
+        } catch (error) {
+            console.error('Error fetching document:', error);
+            alert('Failed to fetch document:', docId, '. Please try again.');
+        }
+    };
+
+
     return (
         <div className="knowledge-base">
             <div className="side-panel">
@@ -367,6 +379,10 @@ export default function KnowledgeBase() {
                 >
                     {renderDocuments(filteredDocs)}
                 </div>
+                
+                <button className="document-button" onClick={() => openDocWin('eQsU3O')}>
+                    open document panel
+                </button>
 
                 <button className="new-folder-button" onClick={handleNewFolder}>
                     <Plus size={20} />
@@ -423,7 +439,10 @@ export default function KnowledgeBase() {
                             </div>
                         ) : (
                             <div className="document-content">
-                                <ReactMarkdown>{selectedDoc.content}</ReactMarkdown>
+                                <div className="document-text">
+                                    <ReactMarkdown>{selectedDoc.content}</ReactMarkdown>
+                                </div>
+                                <DocumentPanel document={secondDoc} onClose={() => setSecondDoc(null)} />
                             </div>
                         )}
                     </>

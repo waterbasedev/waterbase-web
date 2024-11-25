@@ -244,6 +244,14 @@ code {
   }
   
   .document-content {
-    white-space: wrap;
+    display: flex;
+    background-color: red;
     line-height: 1.6;
+  }
+
+  .document-text{
+    white-space: normal;
+    word-wrap: break-word;
+    margin: 0;
+    background-color: blue;
   }
