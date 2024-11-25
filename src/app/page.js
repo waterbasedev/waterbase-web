@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import "./globals.css";
-import Sidebar from "@/app/components/Sidebar.js";
+import { Sidebar } from "@/app/components/Sidebar";
 import { DocumentViewer } from "@/app/components/Viewer";
 import { nestDocuments } from "@/app/utils/document-helper.js";
 import { fetchDocuments } from "@/app/utils/api.js";
@@ -24,7 +24,7 @@ export default function KnowledgeBase() {
     loadDocuments();
   }, []);
   return (
-    <div className="knowledge-base">
+    <div className="knowledgeBase">
       <Sidebar
         documents={documents}
         setDocuments={setDocuments}

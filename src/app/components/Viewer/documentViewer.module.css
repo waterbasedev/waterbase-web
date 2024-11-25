@@ -1,0 +1,132 @@
+@import "@/app/globals.css";
+
+.documentViewer {
+    flex: 1;
+    padding: 1.5rem;
+    background-color: white;
+    overflow-y: auto;
+}
+
+.documentViewer h2,
+.documentViewer p {
+    margin: 0;
+}
+
+.docMeta {
+    font-size: 1rem;
+}
+
+.metaLabel {
+    font-weight: 600;
+}
+
+.documentHeaderMetadata {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    background-color: hsl(0, 0%, 95%);
+}
+
+.documentHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.documentHeaderTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 24px;
+    margin: 0.5rem 0;
+}
+
+.documentActions {
+    display: flex;
+    gap: 8px;
+}
+
+.editButton,
+.deleteButton {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.editButton {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.editButton:hover {
+    background-color: #e5e7eb;
+}
+
+.deleteButton {
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+}
+
+.deleteButton:hover {
+    background-color: #fecaca;
+}
+
+.editorContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.markdownEditor {
+    width: 100%;
+    height: 400px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-family: monospace;
+    resize: vertical;
+}
+
+.editorActions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.cancelButton {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+}
+
+.saveButton {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.saveButton:hover {
+    background-color: var(--primary-hover-color);
+}
+
+.noSelection {
+    text-align: center;
+    color: #6b7280;
+    margin: auto;
+}
+
+.documentContent {
+    white-space: wrap;
+    line-height: 1.6;
+}
