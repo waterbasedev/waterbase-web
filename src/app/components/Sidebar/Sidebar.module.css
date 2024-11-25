@@ -1,0 +1,122 @@
+@import "@/app/globals.css";
+
+.folder {
+    border-radius: 5px;
+    padding-left: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.folderItem {
+    display: flex;
+    align-items: center;
+    justify-content: normal;
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.folderCollapse {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.folderChildren {
+    border-left: 3px solid #cccccc;
+}
+
+.documentItem {
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: normal;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.documentItem:hover {
+    background-color: var(--document-hover-color);
+}
+
+.documentItem.selected {
+    background-color: #83a5e7;
+    color: #1f2937;
+}
+
+.sidePanel {
+    width: 25%;
+    max-width: 256px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+}
+
+.panelHeader {
+    padding: 10px;
+    font-size: 32pt;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.searchContainer {
+    padding: 16px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.searchIcon {
+    color: #6b7280;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+
+.documentsList {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 8px;
+}
+
+.newDocButton {
+    margin: 16px;
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.newFolderButton {
+    margin: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #32a0d3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.newDocButton:hover {
+    background-color: var(--primary-hover-color);
+}

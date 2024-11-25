@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Plus, Search, Folder, FileText, ChevronDown } from "lucide-react";
-import { updateDocument, refreshDocuments } from "../utils/api";
+import { updateDocument, refreshDocuments } from "@/app/utils/api";
 import {
   isDescendant,
   findDocfromId,
   handleNewItem,
-} from "../utils/document-helper";
+} from "@/app/utils/document-helper";
+import styles from "./Sidebar.module.css";
 
 const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -100,7 +101,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
           <div
             id={folder.id}
             key={folder.id}
-            className="folder"
+            className={styles.folder}
             draggable
             onDragStart={(e) => {
               e.stopPropagation();
@@ -116,11 +117,11 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
             }}
           >
             <div
-              className="folder-item"
+              className={styles.folderItem}
               onClick={() => setSelectedItem(folder)}
             >
               <button
-                className="folder-collapse"
+                className={styles.folderCollapse}
                 onClick={(e) => {
                   e.stopPropagation();
                   collapseFolder(folder);
@@ -140,7 +141,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
               <Folder size={20} /> <strong>{folder.title}</strong>
             </div>
             <div
-              className="folder-children"
+              className={styles.folderChildren}
               style={{
                 display: collapsedFolders[folder.id] ? "none" : "block",
               }}
@@ -152,7 +153,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
         {documents.map((doc) => (
           <div
             key={doc.id}
-            className="document-item"
+            className={styles.documentItem}
             draggable
             onDragStart={(e) => {
               e.stopPropagation();
@@ -177,24 +178,24 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
   };
 
   return (
-    <div className="side-panel">
-      <div className="panel-header">
-        <img src="/bulb.svg" alt="Logo" className="header-logo" />
+    <div className={styles.sidePanel}>
+      <div className={styles.panelHeader}>
+        <img src="/bulb.svg" alt="Logo" className={styles.headerLogo} />
         <text>WaterBase</text>
       </div>
-      <div className="search-container">
-        <Search className="search-icon" size={20} />
+      <div className={styles.searchContainer}>
+        <Search className={styles.searchIcon} size={20} />
         <input
           type="text"
           placeholder="Search documents..."
           value={searchTerm}
           onChange={handleSearch}
-          className="search-input"
+          className={styles.searchInput}
         />
       </div>
 
       <div
-        className="documents-list"
+        className={styles.documentsList}
         onDrop={handleDropOutside}
         onDragOver={(e) => e.preventDefault()}
       >
@@ -202,7 +203,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
       </div>
 
       <button
-        className="new-folder-button"
+        className={styles.newFolderButton}
         onClick={() => handleNewItem(documents, setDocuments, "folder")}
       >
         <Plus size={20} />
@@ -210,7 +211,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
       </button>
 
       <button
-        className="new-doc-button"
+        className={styles.newDocButton}
         onClick={() => handleNewItem(documents, setDocuments, "document")}
       >
         <Plus size={20} />
