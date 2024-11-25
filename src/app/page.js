@@ -5,13 +5,12 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import "./globals.css";
 import Sidebar from "@/app/components/Sidebar.js";
 import { DocumentViewer } from "@/app/components/Viewer";
-import { nestDocuments, handleNewItem } from "@/app/utils/document-helper.js";
+import { nestDocuments } from "@/app/utils/document-helper.js";
 import { fetchDocuments } from "@/app/utils/api.js";
 
 export default function KnowledgeBase() {
   const [documents, setDocuments] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState(null);
-  const [collapsedFolders, setCollapsedFolders] = React.useState({});
 
   useEffect(() => {
     const loadDocuments = async () => {
@@ -29,10 +28,7 @@ export default function KnowledgeBase() {
       <Sidebar
         documents={documents}
         setDocuments={setDocuments}
-        handleNewItem={handleNewItem}
         setSelectedItem={setSelectedItem}
-        setCollapsedFolders={setCollapsedFolders}
-        collapsedFolders={collapsedFolders}
       />
       <DocumentViewer
         documents={documents}
