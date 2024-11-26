@@ -53,7 +53,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
       if (docToUpdate.type === "folder" && docToUpdate.children) {
         if (
           isDescendant(docToUpdate, dropTarget, (id) =>
-            findDocfromId(id, documents)
+            findDocfromId(documents, id)
           )
         ) {
           alert("Cannot drop a folder into one of its descendants.");
@@ -62,7 +62,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
       }
 
       if (dropTarget.type === "document") {
-        const parentFolder = findDocfromId(dropTarget.parent_id, documents);
+        const parentFolder = findDocfromId(documents, dropTarget.parent_id);
         console.log("Parent folder:", dropTarget.parent_id, parentFolder);
         if (parentFolder) {
           dropTarget = parentFolder;
