@@ -1,0 +1,33 @@
+.button {
+    background: none;
+    border: none;
+    padding: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.button:hover {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='dark'] .button {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='dark'] .button:hover {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.icon {
+    height: 1.25rem;
+    width: 1.25rem;
+}

@@ -1,18 +1,67 @@
 @layer base {
   :root {
+    /* Main Colors */
     --primary-color: #2563eb;
+    --secondary-color: #32a0d3;
+    /* Semantic Colors */
+    --error-color: #dc2626;
+    /* Neutral Colors */
+    --primary-neutral-white: #ffffff;
+    --primary-neutral-black: #2e2a28;
+    /* Greys */
+    --primary-neutral-grey-lightest: #f9fafb;
+    --primary-neutral-grey-lighter: #f3f4f6;
+    --primary-neutral-grey-light: #e5e7eb;
+    --primary-neutral-grey-dark: #cccccc;
+    --primary-neutral-grey-darker: #6b7280;
     --primary-hover-color: #3b82f6;
     --document-hover-color: #f3f4f6;
-    --danger-color: #dc2626;
+    /* Spacing */
+    --spacing-small: 0.5rem;
+    --spacing-medium: 1rem;
+    --spacing-large: 2rem;
+    /* Button Component */
+    --btn-primary-bg: var(--primary-color);
+    --btn-secondary-bg: var(--secondary-color);
+  }
+
+  [data-theme='dark'] {
+    /* Main Colors */
+    --primary-color: #1d4ed8;
+    /* Adjusted for dark mode */
+    --secondary-color: #0284c7;
+    /* Semantic Colors */
+    --error-color: #dc2626;
+    /* Neutral Colors */
+    --primary-neutral-white: #d1d5db;
+    --primary-neutral-black: #1a1a1a;
+    /* Greys */
+    --primary-neutral-grey-lightest: #1f2937;
+    --primary-neutral-grey-lighter: #222730;
+    --primary-neutral-grey-light: #374151;
+    --primary-neutral-grey-dark: #6b7280;
+    --primary-neutral-grey-darker: #4b5563;
+    --primary-hover-color: #60a5fa;
+    --document-hover-color: #4b5563;
+    /* Button Component */
+    --btn-primary-bg: var(--primary-color);
+    --btn-secondary-bg: var(--secondary-color);
   }
 
   body {
     margin: 0;
+    color: var(--primary-neutral-black);
+    background-color: var(--primary-neutral-white);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  [data-theme='dark'] body {
+    color: var(--primary-neutral-white);
+    background-color: var(--primary-neutral-black);
   }
 
   code {
