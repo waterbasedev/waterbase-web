@@ -1,249 +1,71 @@
-:root {
-  --primary-color: #2563eb;
-  --primary-hover-color: #3b82f6;
-  --document-hover-color: #f3f4f6;
-  --danger-color: #dc2626;
+@layer base {
+  :root {
+    /* Main Colors */
+    --primary-color: #2563eb;
+    --secondary-color: #32a0d3;
+    /* Semantic Colors */
+    --error-color: #dc2626;
+    /* Neutral Colors */
+    --primary-neutral-white: #ffffff;
+    --primary-neutral-black: #2e2a28;
+    /* Greys */
+    --primary-neutral-grey-lightest: #f9fafb;
+    --primary-neutral-grey-lighter: #f3f4f6;
+    --primary-neutral-grey-light: #e5e7eb;
+    --primary-neutral-grey-dark: #cccccc;
+    --primary-neutral-grey-darker: #6b7280;
+    --primary-hover-color: #3b82f6;
+    --document-hover-color: #f3f4f6;
+    /* Spacing */
+    --spacing-small: 0.5rem;
+    --spacing-medium: 1rem;
+    --spacing-large: 2rem;
+    /* Button Component */
+    --btn-primary-bg: var(--primary-color);
+    --btn-secondary-bg: var(--secondary-color);
+  }
+
+  [data-theme='dark'] {
+    /* Main Colors */
+    --primary-color: #1d4ed8;
+    /* Adjusted for dark mode */
+    --secondary-color: #0284c7;
+    /* Semantic Colors */
+    --error-color: #dc2626;
+    /* Neutral Colors */
+    --primary-neutral-white: #d1d5db;
+    --primary-neutral-black: #1a1a1a;
+    /* Greys */
+    --primary-neutral-grey-lightest: #1f2937;
+    --primary-neutral-grey-lighter: #222730;
+    --primary-neutral-grey-light: #374151;
+    --primary-neutral-grey-dark: #6b7280;
+    --primary-neutral-grey-darker: #4b5563;
+    --primary-hover-color: #60a5fa;
+    --document-hover-color: #4b5563;
+    /* Button Component */
+    --btn-primary-bg: var(--primary-color);
+    --btn-secondary-bg: var(--secondary-color);
+  }
+
+  body {
+    margin: 0;
+    color: var(--primary-neutral-black);
+    background-color: var(--primary-neutral-white);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  [data-theme='dark'] body {
+    color: var(--primary-neutral-white);
+    background-color: var(--primary-neutral-black);
+  }
+
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
 }
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-.knowledge-base {
-    display: flex;
-    height: 100vh;
-    width: 100%;
-  }
-  
-  .side-panel {
-    width: 256px;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid #e5e7eb;
-    background-color: #f9fafb;
-  }
-  
-  .panel-header {
-    padding: 10px;
-    font-size: 32pt;
-    border-bottom: 1px solid #e5e7eb;
-  }
-  
-  .search-container {
-    padding: 16px;
-    border-bottom: 1px solid #e5e7eb;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .search-icon {
-    color: #6b7280;
-  }
-  
-  .search-input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #e5e7eb;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  .documents-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 8px 8px;
-  }
-  
-  .folder {
-    border-radius: 5px;
-    padding-left: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-
-  .folder-collapse {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .folder-item {
-    display: flex;
-    align-items: center;
-    justify-content: normal;
-    padding: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-  .folder-children {
-    border-left: 3px solid #cccccc;
-  }
-  
-  .document-item {
-    border-radius: 5px;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: normal;
-  
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .document-item:hover {
-    background-color: var(--document-hover-color);
-  }
-  
-  .document-item.selected {
-    background-color: #83a5e7;
-    color: #1f2937;
-  }
-  
-  .new-doc-button {
-    margin: 16px;
-    padding: 8px 16px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .new-folder-button {
-    margin: 16px;
-    padding: 8px 16px;
-    background-color: #32a0d3;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .new-doc-button:hover {
-    background-color: var(--primary-hover-color);
-  }
-  
-  .document-viewer {
-    flex: 1;
-    padding: 24px;
-    background-color: white;
-    overflow-y: auto;
-  }
-  
-  .document-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-    font-size: 24px;
-  }
-  
-  .document-actions {
-    display: flex;
-    gap: 8px;
-  }
-  
-  .edit-button, .delete-button {
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  .edit-button {
-    background-color: #f3f4f6;
-    border: 1px solid #e5e7eb;
-    color: #374151;
-  }
-  
-  .edit-button:hover {
-    background-color: #e5e7eb;
-  }
-  
-  .delete-button {
-    background-color: #fee2e2;
-    border: 1px solid #fecaca;
-    color: #dc2626;
-  }
-  
-  .delete-button:hover {
-    background-color: #fecaca;
-  }
-  
-  .editor-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  .markdown-editor {
-    width: 100%;
-    height: 400px;
-    padding: 16px;
-    border: 1px solid #e5e7eb;
-    border-radius: 4px;
-    font-family: monospace;
-    resize: vertical;
-  }
-  
-  .editor-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-  
-  .cancel-button {
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: #f3f4f6;
-    border: 1px solid #e5e7eb;
-  }
-  
-  .save-button {
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-  }
-  
-  .save-button:hover {
-    background-color: var(--primary-hover-color);
-  }
-  
-  .no-selection {
-    text-align: center;
-    color: #6b7280;
-    margin-top: 80px;
-  }
-  
-  .document-content {
-    white-space: wrap;
-    line-height: 1.6;
-  }

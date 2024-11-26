@@ -34,11 +34,14 @@ export async function POST(req) {
 export async function PUT(req) {
     try {
         const body = await req.json();
+        const currentTime = new Date().toISOString();
+        
         const result = await sql`
             UPDATE documents 
             SET title = ${body.title}, 
                 content = ${body.content}, 
-                parent_id = ${body.parent_id}
+                parent_id = ${body.parent_id},
+                last_edited_time = ARRAY_APPEND(COALESCE(last_edited_time, ARRAY[]::timestamptz[]), ${currentTime}::timestamptz)
             WHERE id = ${body.id}
             RETURNING *
         `;
