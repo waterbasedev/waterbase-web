@@ -1,9 +1,9 @@
 import React from "react";
-import { Edit, Trash2 } from "lucide-react";
+import { Eye, Edit, Trash2 } from "lucide-react";
 import { formatDate } from "@/app/utils/string-manipulation";
 import styles from "./documentViewer.module.css";
 
-export default function DocumentHeader({ doc, onEdit, onDelete }) {
+export default function DocumentHeader({ doc, onEdit, onDelete}) {
   return (
     <div className={styles.documentHeader}>
       <div className={styles.documentHeaderTitle}>
@@ -29,10 +29,6 @@ export default function DocumentHeader({ doc, onEdit, onDelete }) {
         <span className={styles.docMeta}>
           <span className={styles.metaLabel}>Last Edited:</span>{" "}
           {formatDate(doc.last_edited_time[doc.last_edited_time.length - 1])}
-        </span>
-        <span className={styles.docMeta}>
-          <span className={styles.metaLabel}>Administered by:</span>
-          {doc.administered_by}
         </span>
       </div>
     </div>

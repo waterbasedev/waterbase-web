@@ -131,6 +131,18 @@
 }
 
 .documentContent {
-    white-space: wrap;
-    line-height: 1.6;
+    display: flex;
+    width: 100%;
+  }
+
+.documentContent .documentText{
+    flex: 1;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.clickableText {
+    color: var(--btn-primary-bg);
+    text-decoration: underline;
+    cursor: pointer;
 }

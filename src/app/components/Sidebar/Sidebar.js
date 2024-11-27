@@ -3,7 +3,7 @@ import { Plus, Search, Folder, FileText, ChevronDown } from "lucide-react";
 import { updateDocument, refreshDocuments } from "@/app/utils/api";
 import {
   isDescendant,
-  findDocfromId,
+  findDocFromId,
   handleNewItem,
 } from "@/app/utils/document-helper";
 import styles from "./Sidebar.module.css";
@@ -53,7 +53,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
       if (docToUpdate.type === "folder" && docToUpdate.children) {
         if (
           isDescendant(docToUpdate, dropTarget, (id) =>
-            findDocfromId(documents, id)
+            findDocFromId(documents, id)
           )
         ) {
           alert("Cannot drop a folder into one of its descendants.");
@@ -62,7 +62,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
       }
 
       if (dropTarget.type === "document") {
-        const parentFolder = findDocfromId(documents, dropTarget.parent_id);
+        const parentFolder = findDocFromId(documents, dropTarget.parent_id);
         console.log("Parent folder:", dropTarget.parent_id, parentFolder);
         if (parentFolder) {
           dropTarget = parentFolder;

@@ -1,10 +1,12 @@
 import React from "react";
-import ReactMarkdown from "react-markdown";
 import ReactMde from "react-mde";
 import Showdown from "showdown";
 import { deleteItem, updateDocument, refreshDocuments } from "@/app/utils/api";
 import DocumentHeader from "./DocumentHeader";
+import CustomMarkdown from "./CustomMarkdown";
+import ContextPanel from "./ContextPanel";
 import styles from "./documentViewer.module.css";
+import { findDocFromId } from "@/app/utils/document-helper";
 
 export default function DocumentViewer({
   documents,
@@ -16,6 +18,9 @@ export default function DocumentViewer({
   const [editContent, setEditContent] = React.useState("");
   const [editTitle, setEditTitle] = React.useState("");
   const [selectedTab, setSelectedTab] = React.useState("write");
+  const [secondaryItem, setSecondaryItem] = React.useState(null);
+  const [isContextWindowVisible, setIsContextWindowVisible] =
+    React.useState(false);
 
   const converter = new Showdown.Converter();
 
@@ -49,6 +54,19 @@ export default function DocumentViewer({
     deleteItem(documents, selectedItem, setDocuments, setSelectedItem);
   };
 
+  const openContextWindow = (docId) => {
+    const secondaryDoc = findDocFromId(documents, docId);
+    if (secondaryDoc) {
+      setSecondaryItem(secondaryDoc);
+      setIsContextWindowVisible(true);
+    }
+  };
+
+  const setActiveDocument = (document) => {
+    setSelectedItem(document);
+    setIsContextWindowVisible(false);
+  };
+
   if (!selectedItem) {
     return <div className={styles.noSelection}>Select a document to view</div>;
   }
@@ -59,6 +77,7 @@ export default function DocumentViewer({
         doc={selectedItem}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onOpenContextWindow={openContextWindow}
       />
       {isEditing ? (
         <div className={styles.editorContainer}>
@@ -91,7 +110,18 @@ export default function DocumentViewer({
         </div>
       ) : (
         <div className={styles.documentContent}>
-          <ReactMarkdown>{selectedItem.content}</ReactMarkdown>
+          <div className={styles.documentText}>
+            <CustomMarkdown content={selectedItem.content} onLinkClick={openContextWindow} />
+          </div>
+
+          {isContextWindowVisible && secondaryItem && (
+            <ContextPanel
+              document={secondaryItem}
+              onClose={() => setIsContextWindowVisible(false)}
+              onSetActive={setActiveDocument}
+              onLinkClick={openContextWindow}
+            />
+          )}
         </div>
       )}
     </div>

@@ -1,0 +1,47 @@
+.contextPanel {
+    flex: 0 0 600px; /* Fixed width of 400px */
+    height: 100%;
+    margin-left: 0px;
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid var(--primary-neutral-grey-light);
+    border-radius: 20px;
+}
+
+.contextPanel .documentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 32px;
+}
+
+.contextPanel .contextActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 32px;
+}
+
+.contextPanel button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: var(--btn-primary-bg);
+    color: white;
+    border: none;
+}
+
+.contextPanel .closeContext {
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    color: var(--error-color)
+}
+
+.closeContext:hover {
+    background-color: #fecaca;
+}
+
+
+.contextPanel .setActiveButton {
+    background-color: var(--btn-primary-bg);
+}

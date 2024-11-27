@@ -1,0 +1,11 @@
+.parsedMarkdown {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.clickableText {
+    color: var(--btn-primary-bg);
+    text-decoration: underline;
+    cursor: pointer;
+}

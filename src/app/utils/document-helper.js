@@ -10,28 +10,31 @@ export function isDescendant(parent, child) {
   if (parent.id === child.parent_id) {
     return true;
   }
-  const parentFolder = findDocfromId(child.parent_id);
+  const parentFolder = findDocFromId(child.parent_id);
   return parentFolder ? isDescendant(parent, parentFolder) : false;
 }
 
-export function findDocfromId(docs, docId) {
-  if (!docs || !Array.isArray(docs)) {
-    return undefined;
+// Function to flatten the documents array
+const flattenDocuments = (documents) => {
+  const result = [];
+  const stack = [...documents];
+
+  while (stack.length) {
+    const current = stack.pop();
+    result.push(current);
+    if (current.children) {
+      stack.push(...current.children);
+    }
   }
 
-  for (const doc of docs) {
-    if (doc.id === docId) {
-      return doc;
-    }
-    if (doc.children && Array.isArray(doc.children)) {
-      const foundDoc = findDocfromId(doc.children, docId);
-      if (foundDoc) {
-        return foundDoc;
-      }
-    }
-  }
-  return undefined;
-}
+  return result;
+};
+
+  // Function to find a document by ID
+  export function findDocFromId (documents, docId) {
+    const flattenedDocuments = flattenDocuments(documents);
+    return flattenedDocuments.find(doc => doc.id === docId);
+  };
 
 export function handleNewItem(documents, setDocuments, itemType) {
   const newDoc = {
