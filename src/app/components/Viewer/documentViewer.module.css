@@ -38,12 +38,24 @@
     gap: 0.25rem;
 }
 
-.documentHeaderTitle {
+.documentHeaderTop {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 0.25rem;
+}
+
+.documentHeaderTitle {
+    display: flex;
+    flex-direction: column;
     font-size: 24px;
     margin: 0.5rem 0;
+}
+
+.documentHeaderTitle span {
+    font-size: 12pt;
+    color: var(--primary-neutral-grey-darker);
+    font-weight: 600;
 }
 
 .documentActions {
@@ -159,13 +171,6 @@
     margin: 10px;
     border: 1px solid var(--primary-neutral-grey-light);
     border-radius: 20px;
-}
-
-.contextPanel .contextHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 2rem;
 }
 
 .contextPanel .contextActions {

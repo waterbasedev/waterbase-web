@@ -1,9 +1,16 @@
 import { generateRandomString } from "./string-manipulation.js";
 
-export function nestDocuments(docs, parentId = null) {
+export function nestDocuments(docs, parentId = null, parentPath = []) {
   return docs
     .filter((doc) => doc.parent_id === parentId)
-    .map((doc) => ({ ...doc, children: nestDocuments(docs, doc.id) }));
+    .map((doc) => {
+      const currentPath = [...parentPath, doc.title]; // Assuming each document has a 'title' property
+      return { 
+        ...doc, 
+        path: currentPath, 
+        children: nestDocuments(docs, doc.id, currentPath) 
+      };
+    });
 }
 
 export function isDescendant(parent, child) {
@@ -37,9 +44,9 @@ export function findDocFromId(documents, docId) {
 export function handleNewItem(documents, setDocuments, itemType) {
   const newDoc = {
     id: generateRandomString(6),
-    title: `New Document ${documents.length + 1}`,
+    title: `New ${itemType} ${documents.length + 1}`,
     type: itemType,
-    content: "# New Document\n\nStart writing here...",
+    content: `# New ${itemType}\n\nStart writing here...`,
     parent_id: null,
   };
   fetch("/api/documents", {

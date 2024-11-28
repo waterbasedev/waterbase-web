@@ -8,6 +8,9 @@
     /* Neutral Colors */
     --primary-neutral-white: #ffffff;
     --primary-neutral-black: #2e2a28;
+    /* Inverted Neutral Colors */
+    --white-invert: #d1d5db;
+    --black-invert: #1a1a1a;
     /* Greys */
     --primary-neutral-grey-lightest: #f9fafb;
     --primary-neutral-grey-lighter: #f3f4f6;
@@ -15,7 +18,7 @@
     --primary-neutral-grey-dark: #cccccc;
     --primary-neutral-grey-darker: #6b7280;
     --primary-hover-color: #3b82f6;
-    --document-hover-color: #f3f4f6;
+    --item-hover-bg: #f3f4f6;
     /* Spacing */
     --spacing-small: 0.5rem;
     --spacing-medium: 1rem;
@@ -35,6 +38,9 @@
     /* Neutral Colors */
     --primary-neutral-white: #d1d5db;
     --primary-neutral-black: #1a1a1a;
+    /* Inverted Neutral Colors */
+    --white-invert: #1a1a1a;
+    --black-invert: #d1d5db;
     /* Greys */
     --primary-neutral-grey-lightest: #1f2937;
     --primary-neutral-grey-lighter: #222730;
@@ -42,7 +48,7 @@
     --primary-neutral-grey-dark: #6b7280;
     --primary-neutral-grey-darker: #4b5563;
     --primary-hover-color: #60a5fa;
-    --document-hover-color: #4b5563;
+    --item-hover-bg: #4b5563;
     /* Button Component */
     --btn-primary-bg: var(--primary-color);
     --btn-secondary-bg: var(--secondary-color);

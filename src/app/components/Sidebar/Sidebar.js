@@ -8,7 +8,7 @@ import {
 } from "@/app/utils/document-helper";
 import styles from "./Sidebar.module.css";
 
-const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
+const Sidebar = ({ documents, setDocuments, setSelectedItem, selectedItem }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [collapsedFolders, setCollapsedFolders] = React.useState({});
 
@@ -63,7 +63,6 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
 
       if (dropTarget.type === "document") {
         const parentFolder = findDocFromId(documents, dropTarget.parent_id);
-        console.log("Parent folder:", dropTarget.parent_id, parentFolder);
         if (parentFolder) {
           dropTarget = parentFolder;
         } else {
@@ -99,7 +98,6 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
       <>
         {folders.map((folder) => (
           <div
-            id={folder.id}
             key={folder.id}
             className={styles.folder}
             draggable
@@ -117,7 +115,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
             }}
           >
             <div
-              className={styles.folderItem}
+              className={`${styles.sidebarItem} ${selectedItem?.id === folder.id ? styles.selectedItem : ""}`}
               onClick={() => setSelectedItem(folder)}
             >
               <button
@@ -153,7 +151,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
         {documents.map((doc) => (
           <div
             key={doc.id}
-            className={styles.documentItem}
+            className={`${styles.sidebarItem} ${selectedItem?.id === doc.id ? styles.selectedItem : ""}`}
             draggable
             onDragStart={(e) => {
               e.stopPropagation();
