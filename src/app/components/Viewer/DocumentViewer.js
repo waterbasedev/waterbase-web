@@ -5,7 +5,7 @@ import DocumentEditor from "./DocumentEditor";
 import DocumentRenderer from "./DocumentRenderer";
 import DocumentContextPanel from "./DocumentContextPanel";
 import styles from "./documentViewer.module.css";
-import { findDocfromId } from "@/app/utils/document-helper";
+import { findDocFromId } from "@/app/utils/document-helper";
 
 export default function DocumentViewer({
   documents,
@@ -18,7 +18,7 @@ export default function DocumentViewer({
   const [contextVisible, setContextVisible] = React.useState(false);
 
   const openContextPanel = (docId) => {
-    const secondaryDoc = findDocfromId(documents, docId);
+    const secondaryDoc = findDocFromId(documents, docId);
     if (secondaryDoc) {
       setContextItem(secondaryDoc);
       setContextVisible(true);
