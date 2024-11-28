@@ -134,3 +134,79 @@
     white-space: wrap;
     line-height: 1.6;
 }
+
+.documentText {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-word;
+    flex: 1;
+    padding: 0.75rem;
+    box-sizing: border-box;
+}
+
+.clickableText {
+    color: var(--btn-primary-bg);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.contextPanel {
+    flex: 0 0 600px;
+    /* Fixed width of 400px */
+    height: 100%;
+    margin-left: 0px;
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid var(--primary-neutral-grey-light);
+    border-radius: 20px;
+}
+
+.contextPanel .contextHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 2rem;
+}
+
+.contextPanel .contextActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 32px;
+}
+
+.contextPanel button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: var(--btn-primary-bg);
+    color: white;
+    border: none;
+}
+
+.contextPanel .closeContext {
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    color: var(--error-color)
+}
+
+.closeContext:hover {
+    background-color: #fecaca;
+}
+
+
+.contextPanel .setActiveButton {
+    background-color: var(--btn-primary-bg);
+}
+
+.documentContent {
+    display: flex;
+    width: 100%;
+}
+
+
+.clickableText {
+    color: var(--btn-primary-bg);
+    text-decoration: underline;
+    cursor: pointer;
+}
