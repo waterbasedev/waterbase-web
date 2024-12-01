@@ -13,12 +13,12 @@ export function nestDocuments(docs, parentId = null, parentPath = []) {
     });
 }
 
-export function isDescendant(parent, child) {
+export function isDescendant(parent, child, documents) {
   if (parent.id === child.parent_id) {
     return true;
   }
-  const parentFolder = findDocFromId(child.parent_id);
-  return parentFolder ? isDescendant(parent, parentFolder) : false;
+  const parentFolder = findDocFromId(documents, child.parent_id);
+  return parentFolder ? isDescendant(parent, parentFolder, documents) : false;
 }
 
 const flattenDocuments = (documents) => {

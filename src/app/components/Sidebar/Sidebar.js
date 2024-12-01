@@ -49,17 +49,19 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem, selectedItem }) => 
         console.log("Cannot drop", docToUpdate.title, "into itself.");
         return;
       }
+    
+    console.log(1);
 
       if (docToUpdate.type === "folder" && docToUpdate.children) {
         if (
-          isDescendant(docToUpdate, dropTarget, (id) =>
-            findDocFromId(documents, id)
-          )
+          isDescendant(docToUpdate, dropTarget, documents)
         ) {
           alert("Cannot drop a folder into one of its descendants.");
           return;
         }
       }
+
+      console.log(2);
 
       if (dropTarget.type === "document") {
         const parentFolder = findDocFromId(documents, dropTarget.parent_id);
@@ -69,6 +71,8 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem, selectedItem }) => 
           dropTarget = { id: null };
         }
       }
+
+      console.log(3);
 
       const updatedDoc = { ...docToUpdate, parent_id: dropTarget.id };
       updateDocument(updatedDoc).then(() => refreshDocuments(setDocuments));
@@ -91,12 +95,12 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem, selectedItem }) => 
   };
 
   const renderDocuments = (docs) => {
-    const folders = docs.filter((doc) => doc.type === "folder");
-    const documents = docs.filter((doc) => doc.type !== "folder");
+    const folderItems = docs.filter((doc) => doc.type === "folder");
+    const documentItems = docs.filter((doc) => doc.type !== "folder");
 
     return (
       <>
-        {folders.map((folder) => (
+        {folderItems.map((folder) => (
           <div
             key={folder.id}
             className={styles.folder}
@@ -148,7 +152,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem, selectedItem }) => 
             </div>
           </div>
         ))}
-        {documents.map((doc) => (
+        {documentItems.map((doc) => (
           <div
             key={doc.id}
             className={`${styles.sidebarItem} ${selectedItem?.id === doc.id ? styles.selectedItem : ""}`}
