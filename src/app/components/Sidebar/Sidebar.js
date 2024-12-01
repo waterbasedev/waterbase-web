@@ -177,7 +177,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem, selectedItem }) => 
 
   return (
     <div className={styles.sidePanel}>
-      <div className={styles.panelHeader}>
+      <div className={styles.panelHeader} onClick={() => setSelectedItem(null)}>
         <img src="/bulb.svg" alt="Logo" className={styles.headerLogo} />
         <text>WaterBase</text>
       </div>
