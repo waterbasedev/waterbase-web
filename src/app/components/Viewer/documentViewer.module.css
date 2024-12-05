@@ -1,14 +1,19 @@
 .documentViewer {
     flex: 1;
     padding: 1.5rem;
-    background-color: var(--primary-neutral-white);
     color: var(--primary-neutral-black);
     overflow-y: auto;
+
+    margin: 10px;
+    background-color: var(--glass-bg);
+    box-shadow: inset 0 0 20px var(--glass-rimlight);    
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
 }
 
 [data-theme='dark'] .documentViewer {
     color: var(--primary-neutral-white);
-    background-color: var(--primary-neutral-black);
 }
 
 .documentViewer h2,
@@ -54,7 +59,6 @@
 
 .documentHeaderTitle span {
     font-size: 12pt;
-    color: var(--primary-neutral-grey-darker);
     font-weight: 600;
 }
 
@@ -75,7 +79,7 @@
 
 .editButton {
     background-color: #f3f4f6;
-    border: 1px solid var(--primary-neutral-grey-light);
+    border: 1px solid var(--glass-border);
     color: #374151;
 }
 
@@ -103,7 +107,7 @@
     width: 100%;
     height: 400px;
     padding: 16px;
-    border: 1px solid var(--primary-neutral-grey-light);
+    border: 1px solid var(--glass-border);
     border-radius: 4px;
     font-family: monospace;
     resize: vertical;
@@ -120,7 +124,7 @@
     border-radius: 4px;
     cursor: pointer;
     background-color: #f3f4f6;
-    border: 1px solid var(--primary-neutral-grey-light);
+    border: 1px solid var(--glass-border);
 }
 
 .saveButton {
@@ -166,11 +170,13 @@
     flex: 0 0 600px;
     /* Fixed width of 400px */
     height: 100%;
-    margin-left: 0px;
     padding: 20px;
-    margin: 10px;
-    border: 1px solid var(--primary-neutral-grey-light);
-    border-radius: 20px;
+    margin-top: 20px;
+    background-color: var(--glass-bg);
+    box-shadow: inset 0 0 20px var(--glass-rimlight);    
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
 }
 
 .contextPanel .contextActions {
@@ -237,8 +243,7 @@
   .leftColumn .box, .rightColumn .box {
     flex: 1;
     margin: 10px;
-    background-color: var(--primary-neutral-grey-lighter);
-    border: 1px solid var(--primary-neutral-grey-light);
+    border: 1px solid var(--glass-border);
     border-radius: 10px;
     overflow: hidden;
     background-size: cover;
@@ -258,7 +263,12 @@
     display: flex;
     justify-content: space-around;
     padding: 10px;
-    background-color: var(--white-invert);
+    margin: 10px;
+    background-color: var(--glass-bg);
+    box-shadow: inset 0 0 20px var(--glass-rimlight);    
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
   }
   
   .bottomRowButton {

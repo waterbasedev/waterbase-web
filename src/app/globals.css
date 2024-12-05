@@ -26,6 +26,14 @@
     /* Button Component */
     --btn-primary-bg: var(--primary-color);
     --btn-secondary-bg: var(--secondary-color);
+
+
+    /* glass variables */
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --glass-rimlight: rgba(255, 255, 255, 0.296);
+    --glass-background-gradient: linear-gradient(to bottom, #cecece, #9c9c9c);
+    
   }
 
   [data-theme='dark'] {
@@ -52,6 +60,12 @@
     /* Button Component */
     --btn-primary-bg: var(--primary-color);
     --btn-secondary-bg: var(--secondary-color);
+
+    /* glass dark mode */
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-background-gradient: linear-gradient(to bottom, #393939, #111111);
+    --glass-rimlight: rgba(255, 255, 255, 0.16);
+
   }
 
   body {
