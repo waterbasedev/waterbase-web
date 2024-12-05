@@ -9,7 +9,7 @@
     border-radius: 0.5rem;
     transition: background-color 0.3s ease;
     position: fixed;
-    bottom: 1.5rem;
+    top: 1rem;
     right: 1.5rem;
     z-index: 1000;
     background-color: rgba(0, 0, 0, 0.1);
