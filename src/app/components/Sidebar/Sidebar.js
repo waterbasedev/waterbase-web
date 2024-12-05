@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Plus, Search, Folder, FileText, ChevronDown } from "lucide-react";
-import { updateDocument, refreshDocuments } from "@/app/utils/api";
+import { handleNewItem, updateDocument, refreshDocuments } from "@/app/utils/api";
 import {
   isDescendant,
   findDocFromId,
-  handleNewItem,
 } from "@/app/utils/document-helper";
 import styles from "./Sidebar.module.css";
 

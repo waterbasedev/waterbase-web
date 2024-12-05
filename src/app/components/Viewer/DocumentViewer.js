@@ -32,13 +32,16 @@ export default function DocumentViewer({
         ...selectedItem,
         ...editedDocument,
       };
-
+  
       updateDocument(updatedDoc)
         .then((data) => {
           if (data) {
-            setSelectedItem(data);
-            setIsEditing(false);
-            refreshDocuments(setDocuments);
+            refreshDocuments((newDocuments) => {
+              setDocuments(newDocuments);
+              const updatedSelectedItem = findDocFromId(newDocuments, data.id);
+              setSelectedItem(updatedSelectedItem);
+              setIsEditing(false);
+            });
           }
         })
         .catch((error) => {

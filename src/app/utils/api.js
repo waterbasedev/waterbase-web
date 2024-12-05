@@ -1,4 +1,5 @@
 import { nestDocuments } from "./document-helper";
+import { generateRandomString } from "./string-manipulation.js";
 
 export const fetchDocuments = async () => {
     try {
@@ -13,6 +14,7 @@ export const fetchDocuments = async () => {
 };
 
 export const updateDocument = async (updatedDoc) => {
+    console.log('Updating document:', updatedDoc);
     try {
         const response = await fetch(`/api/documents`, {
             method: 'PUT',
@@ -41,6 +43,31 @@ export const refreshDocuments = async (setDocuments) => {
         alert('Failed to fetch documents. Please try again.');
     }
 };
+
+export function handleNewItem(documents, setDocuments, itemType) {
+    const newDoc = {
+        id: generateRandomString(6),
+        title: `New ${itemType} ${documents.length + 1}`,
+        type: itemType,
+        content: `# New ${itemType}\n\nStart writing here...`,
+        parent_id: null,
+    };
+    fetch("/api/documents", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newDoc),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        setDocuments([...documents, data]);
+        return refreshDocuments(setDocuments); // Refresh documents after adding the new one
+    })
+    .catch((error) => {
+        console.error("Error creating new document:", error);
+    });
+}
 
 export const deleteItem = async (documents, selectedItem, setDocuments, setSelectedItem) => {
     const findChildDocuments = (folderId, docs) => {
