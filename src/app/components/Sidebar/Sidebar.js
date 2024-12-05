@@ -101,6 +101,13 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem, selectedItem }) => 
     }
   };
 
+  const collapseFolder = (folder) => {
+    setCollapsedFolders((prevState) => ({
+      ...prevState,
+      [folder.id]: !prevState[folder.id],
+    }));
+  };
+
   const renderDocuments = (docs) => {
     const folderItems = docs.filter((doc) => doc.type === "folder");
     const documentItems = docs.filter((doc) => doc.type !== "folder");
