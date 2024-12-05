@@ -84,6 +84,13 @@
     border: 1px solid var(--glass-border);
     border-radius: 0.25rem;
     font-size: 0.875rem;
+    background-color: var(--glass-bg);
+}
+
+.searchInput:focus {
+    outline: none;
+    border: 2px solid var(--secondary-color);
+    box-shadow: 0 0 5px var(--secondary-color);
 }
 
 .documentsList {
@@ -124,6 +131,12 @@
 
 .newDocButton:hover {
     background-color: var(--primary-hover-color);
+    box-shadow: 0 0 10px var(--primary-hover-color);
+}
+
+.newFolderButton:hover {
+    background-color: var(--primary-hover-color);
+    box-shadow: 0 0 10px var(--primary-hover-color);
 }
 
 .selectedItem {
