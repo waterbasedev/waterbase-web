@@ -1,16 +1,26 @@
 import { generateRandomString } from "./string-manipulation.js";
 
-export function nestDocuments(docs, parentId = null, parentPath = []) {
+export function nestDocuments(docs, parentId = null) {
   return docs
     .filter((doc) => doc.parent_id === parentId)
-    .map((doc) => {
-      const currentPath = [...parentPath, doc.title]; // Assuming each document has a 'title' property
-      return { 
-        ...doc, 
-        path: currentPath, 
-        children: nestDocuments(docs, doc.id, currentPath) 
-      };
-    });
+    .map((doc) => ({
+      ...doc,
+      children: nestDocuments(docs, doc.id),
+    }));
+}
+
+export async function calculatePath(documents, parentId) {
+  let path = [];
+  while (parentId) {
+    const parentDoc = documents.find((doc) => doc.id === parentId);
+    if (parentDoc) {
+      path.unshift(parentDoc.title);
+      parentId = parentDoc.parent_id;
+    } else {
+      break;
+    }
+  }
+  return path;
 }
 
 export function isDescendant(parent, child, documents) {
@@ -49,6 +59,7 @@ export function handleNewItem(documents, setDocuments, itemType) {
     content: `# New ${itemType}\n\nStart writing here...`,
     parent_id: null,
   };
+  console.log("Creating new document:", newDoc);
   fetch("/api/documents", {
     method: "POST",
     headers: {
@@ -57,5 +68,12 @@ export function handleNewItem(documents, setDocuments, itemType) {
     body: JSON.stringify(newDoc),
   })
     .then((response) => response.json())
-    .then((data) => setDocuments([...documents, data]));
+    .then((data) => {
+      console.log("New document created:", data);
+      setDocuments([...documents, data]);
+      console.log("Documents:", [...documents, data]);
+    })
+    .catch((error) => {
+      console.error("Error creating new document:", error);
+    });
 }

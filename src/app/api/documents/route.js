@@ -31,24 +31,25 @@ export async function POST(req) {
 }
 
 // Handle PUT request
+// Handle PUT request
 export async function PUT(req) {
     try {
-        const body = await req.json();
-        const currentTime = new Date().toISOString();
-        
-        const result = await sql`
-            UPDATE documents 
-            SET title = ${body.title}, 
-                content = ${body.content}, 
-                parent_id = ${body.parent_id},
-                last_edited_time = ARRAY_APPEND(COALESCE(last_edited_time, ARRAY[]::timestamptz[]), ${currentTime}::timestamptz)
-            WHERE id = ${body.id}
-            RETURNING *
-        `;
-        return new Response(JSON.stringify(result[0]), { status: 200 });
+      const body = await req.json();
+      const currentTime = new Date().toISOString();
+      const result = await sql`
+        UPDATE documents 
+        SET title = ${body.title}, 
+            content = ${body.content}, 
+            parent_id = ${body.parent_id},
+            path = ${body.path},
+            last_edited_time = ARRAY_APPEND(COALESCE(last_edited_time, ARRAY[]::timestamptz[]), ${currentTime}::timestamptz)
+        WHERE id = ${body.id}
+        RETURNING *
+      `;
+      return new Response(JSON.stringify(result[0]), { status: 200 });
     } catch (error) {
-        console.error('Database error:', error);
-        return new Response(JSON.stringify({ error: 'Failed to update document' }), { status: 500 });
+      console.error('Database error:', error);
+      return new Response(JSON.stringify({ error: 'Failed to update document', details: error.message }), { status: 500 });
     }
 }
 

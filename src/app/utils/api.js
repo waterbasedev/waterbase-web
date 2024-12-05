@@ -1,4 +1,5 @@
 import { nestDocuments } from "./document-helper";
+import { calculatePath } from './document-helper';
 
 export const fetchDocuments = async () => {
     try {
@@ -14,16 +15,25 @@ export const fetchDocuments = async () => {
 
 export const updateDocument = async (updatedDoc) => {
     try {
+        const documents = await fetchDocuments();
+        const path = await calculatePath(documents, updatedDoc.parent_id);
+        updatedDoc.path = path;
+        console.log('Updated document:', updatedDoc);
+
         const response = await fetch(`/api/documents`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(updatedDoc)
+            body: JSON.stringify(updatedDoc),
         });
+
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Failed to update document:', response.status, response.statusText, errorText);
             throw new Error('Failed to update document');
         }
+
         const data = await response.json();
         return data;
     } catch (error) {

@@ -19,5 +19,9 @@ export function formatDate(date) {
 }
 
 export function arrayToPath(array) {
-  return array.join(" > ");
+  if (!array || array.length === 0) {
+    return "";
+  } else {
+    return array.join(" > ");
+  }
 }
