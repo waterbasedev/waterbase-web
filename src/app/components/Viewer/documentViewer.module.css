@@ -258,7 +258,7 @@
     display: flex;
     justify-content: space-around;
     padding: 10px;
-    background-color: var(--primary-neutral-grey-lightest);
+    background-color: var(--white-invert);
   }
   
   .bottomRowButton {

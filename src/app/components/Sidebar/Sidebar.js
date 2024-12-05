@@ -16,18 +16,25 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem, selectedItem }) => 
     setSearchTerm(e.target.value);
   };
 
-  const filteredDocs = documents.filter(
-    (doc) =>
-      doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doc.content.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const collapseFolder = (folder) => {
-    setCollapsedFolders((prevState) => ({
-      ...prevState,
-      [folder.id]: !prevState[folder.id],
-    }));
+  const recursiveSearch = (docs, term) => {
+    let result = [];
+    docs.forEach((doc) => {
+      if (
+        doc.title.toLowerCase().includes(term.toLowerCase()) ||
+        doc.content.toLowerCase().includes(term.toLowerCase())
+      ) {
+        result.push(doc);
+      }
+      if (doc.children && doc.children.length > 0) {
+        result = result.concat(recursiveSearch(doc.children, term));
+      }
+    });
+    return result;
   };
+
+  const filteredDocs = searchTerm
+    ? recursiveSearch(documents, searchTerm)
+    : documents;
 
   const handleDragStart = (e, item) => {
     e.dataTransfer.setData("item", JSON.stringify(item));
