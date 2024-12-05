@@ -29,6 +29,7 @@ export default function KnowledgeBase() {
         documents={documents}
         setDocuments={setDocuments}
         setSelectedItem={setSelectedItem}
+        selectedItem={selectedItem}
       />
       <DocumentViewer
         documents={documents}

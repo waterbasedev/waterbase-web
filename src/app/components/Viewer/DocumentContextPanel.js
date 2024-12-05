@@ -1,5 +1,6 @@
 import React from "react";
 import DocumentRenderer from "./DocumentRenderer";
+import DocumentHeader from "./DocumentHeader";
 import styles from "./documentViewer.module.css";
 
 const ContextPanel = ({ document, onClose, onSetActive, onLinkClick }) => {
@@ -21,9 +22,7 @@ const ContextPanel = ({ document, onClose, onSetActive, onLinkClick }) => {
           Close
         </button>
       </div>
-      <div className={styles.contextHeader}>
-        <h2>{document.title}</h2>
-      </div>
+      <DocumentHeader doc={document} />
       <DocumentRenderer content={document.content} onLinkClick={onLinkClick} />
     </div>
   );

@@ -1,3 +1,5 @@
+import { nestDocuments } from "./document-helper";
+
 export const fetchDocuments = async () => {
     try {
         const response = await fetch('/api/documents');
@@ -33,11 +35,6 @@ export const updateDocument = async (updatedDoc) => {
 export const refreshDocuments = async (setDocuments) => {
     try {
         const data = await fetchDocuments();
-        const nestDocuments = (docs, parentId = null) => {
-            return docs
-                .filter(doc => doc.parent_id === parentId)
-                .map(doc => ({ ...doc, children: nestDocuments(docs, doc.id) }));
-        };
         setDocuments(nestDocuments(data));
     } catch (error) {
         console.error('Error fetching documents:', error);
