@@ -15,6 +15,8 @@ export const fetchDocuments = async () => {
 
 export const updateDocument = async (updatedDoc) => {
     console.log('Updating document:', updatedDoc);
+    const originalPath = updatedDoc.path; // Save the original path
+
     try {
         const response = await fetch(`/api/documents`, {
             method: 'PUT',
@@ -27,6 +29,13 @@ export const updateDocument = async (updatedDoc) => {
             throw new Error('Failed to update document');
         }
         const data = await response.json();
+        console.log('Document updated:', data);
+
+        // Reattach the path and update the last entry with the new title
+        if (originalPath) {
+            data.path = [...originalPath.slice(0, -1), data.title];
+        }
+
         return data;
     } catch (error) {
         console.error('Error updating document:', error);
