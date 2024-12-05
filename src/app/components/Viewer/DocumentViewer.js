@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import { deleteItem, updateDocument, refreshDocuments } from "@/app/utils/api";
 import DocumentHeader from "./DocumentHeader";
 import DocumentEditor from "./DocumentEditor";
+import HomeScreen from "./Homescreen";
 import DocumentRenderer from "./DocumentRenderer";
 import DocumentContextPanel from "./DocumentContextPanel";
 import styles from "./documentViewer.module.css";
@@ -61,7 +62,7 @@ export default function DocumentViewer({
   };
 
   if (!selectedItem) {
-    return <div className={styles.noSelection}>Select a document to view</div>;
+    return <HomeScreen documents={documents} setSelectedItem={setSelectedItem} />;
   }
 
   return (
