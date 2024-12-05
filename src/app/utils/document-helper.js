@@ -1,5 +1,3 @@
-import { generateRandomString } from "./string-manipulation.js";
-
 export function nestDocuments(docs, parentId = null, parentPath = []) {
   return docs
     .filter((doc) => doc.parent_id === parentId)
@@ -39,23 +37,4 @@ const flattenDocuments = (documents) => {
 export function findDocFromId(documents, docId) {
   const flattenedDocuments = flattenDocuments(documents);
   return flattenedDocuments.find((doc) => doc.id === docId);
-}
-
-export function handleNewItem(documents, setDocuments, itemType) {
-  const newDoc = {
-    id: generateRandomString(6),
-    title: `New ${itemType} ${documents.length + 1}`,
-    type: itemType,
-    content: `# New ${itemType}\n\nStart writing here...`,
-    parent_id: null,
-  };
-  fetch("/api/documents", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newDoc),
-  })
-    .then((response) => response.json())
-    .then((data) => setDocuments([...documents, data]));
 }

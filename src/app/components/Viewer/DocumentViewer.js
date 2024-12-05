@@ -36,9 +36,9 @@ export default function DocumentViewer({
       updateDocument(updatedDoc)
         .then((data) => {
           if (data) {
+            refreshDocuments(setDocuments);
             setSelectedItem(data);
             setIsEditing(false);
-            refreshDocuments(setDocuments);
           }
         })
         .catch((error) => {
