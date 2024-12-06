@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { Plus, Search, Folder, FileText, ChevronDown } from "lucide-react";
-import { updateDocument, refreshDocuments } from "@/app/utils/api";
+import { handleNewItem, updateDocument, refreshDocuments } from "@/app/utils/api";
 import {
   isDescendant,
-  findDocfromId,
-  handleNewItem,
+  findDocFromId,
 } from "@/app/utils/document-helper";
 import styles from "./Sidebar.module.css";
 
-const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
+const Sidebar = ({ documents, setDocuments, setSelectedItem, selectedItem }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [collapsedFolders, setCollapsedFolders] = React.useState({});
 
@@ -16,18 +15,25 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredDocs = documents.filter(
-    (doc) =>
-      doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doc.content.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const collapseFolder = (folder) => {
-    setCollapsedFolders((prevState) => ({
-      ...prevState,
-      [folder.id]: !prevState[folder.id],
-    }));
+  const recursiveSearch = (docs, term) => {
+    let result = [];
+    docs.forEach((doc) => {
+      if (
+        doc.title.toLowerCase().includes(term.toLowerCase()) ||
+        doc.content.toLowerCase().includes(term.toLowerCase())
+      ) {
+        result.push(doc);
+      }
+      if (doc.children && doc.children.length > 0) {
+        result = result.concat(recursiveSearch(doc.children, term));
+      }
+    });
+    return result;
   };
+
+  const filteredDocs = searchTerm
+    ? recursiveSearch(documents, searchTerm)
+    : documents;
 
   const handleDragStart = (e, item) => {
     e.dataTransfer.setData("item", JSON.stringify(item));
@@ -49,27 +55,30 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
         console.log("Cannot drop", docToUpdate.title, "into itself.");
         return;
       }
+    
+    console.log(1);
 
       if (docToUpdate.type === "folder" && docToUpdate.children) {
         if (
-          isDescendant(docToUpdate, dropTarget, (id) =>
-            findDocfromId(id, documents)
-          )
+          isDescendant(docToUpdate, dropTarget, documents)
         ) {
           alert("Cannot drop a folder into one of its descendants.");
           return;
         }
       }
 
+      console.log(2);
+
       if (dropTarget.type === "document") {
-        const parentFolder = findDocfromId(dropTarget.parent_id, documents);
-        console.log("Parent folder:", dropTarget.parent_id, parentFolder);
+        const parentFolder = findDocFromId(documents, dropTarget.parent_id);
         if (parentFolder) {
           dropTarget = parentFolder;
         } else {
           dropTarget = { id: null };
         }
       }
+
+      console.log(3);
 
       const updatedDoc = { ...docToUpdate, parent_id: dropTarget.id };
       updateDocument(updatedDoc).then(() => refreshDocuments(setDocuments));
@@ -91,15 +100,21 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
     }
   };
 
+  const collapseFolder = (folder) => {
+    setCollapsedFolders((prevState) => ({
+      ...prevState,
+      [folder.id]: !prevState[folder.id],
+    }));
+  };
+
   const renderDocuments = (docs) => {
-    const folders = docs.filter((doc) => doc.type === "folder");
-    const documents = docs.filter((doc) => doc.type !== "folder");
+    const folderItems = docs.filter((doc) => doc.type === "folder");
+    const documentItems = docs.filter((doc) => doc.type !== "folder");
 
     return (
       <>
-        {folders.map((folder) => (
+        {folderItems.map((folder) => (
           <div
-            id={folder.id}
             key={folder.id}
             className={styles.folder}
             draggable
@@ -117,7 +132,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
             }}
           >
             <div
-              className={styles.folderItem}
+              className={`${styles.sidebarItem} ${selectedItem?.id === folder.id ? styles.selectedItem : ""}`}
               onClick={() => setSelectedItem(folder)}
             >
               <button
@@ -150,10 +165,10 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
             </div>
           </div>
         ))}
-        {documents.map((doc) => (
+        {documentItems.map((doc) => (
           <div
             key={doc.id}
-            className={styles.documentItem}
+            className={`${styles.sidebarItem} ${selectedItem?.id === doc.id ? styles.selectedItem : ""}`}
             draggable
             onDragStart={(e) => {
               e.stopPropagation();
@@ -179,7 +194,7 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
 
   return (
     <div className={styles.sidePanel}>
-      <div className={styles.panelHeader}>
+      <div className={styles.panelHeader} onClick={() => setSelectedItem(null)}>
         <img src="/bulb.svg" alt="Logo" className={styles.headerLogo} />
         <text>WaterBase</text>
       </div>
@@ -203,19 +218,19 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem }) => {
       </div>
 
       <button
-        className={styles.newFolderButton}
-        onClick={() => handleNewItem(documents, setDocuments, "folder")}
-      >
-        <Plus size={20} />
-        New Folder
-      </button>
-
-      <button
         className={styles.newDocButton}
         onClick={() => handleNewItem(documents, setDocuments, "document")}
       >
         <Plus size={20} />
         New Document
+      </button>
+
+      <button
+        className={styles.newFolderButton}
+        onClick={() => handleNewItem(documents, setDocuments, "folder")}
+      >
+        <Plus size={20} />
+        New Folder
       </button>
     </div>
   );

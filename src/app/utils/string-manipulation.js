@@ -17,3 +17,7 @@ export function formatDate(date) {
     minute: "2-digit",
   });
 }
+
+export function arrayToPath(array) {
+  return array.join(" > ");
+}

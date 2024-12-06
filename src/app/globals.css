@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @layer base {
   :root {
     /* Main Colors */
@@ -8,6 +12,9 @@
     /* Neutral Colors */
     --primary-neutral-white: #ffffff;
     --primary-neutral-black: #2e2a28;
+    /* Inverted Neutral Colors */
+    --white-invert: #ffffff;
+    --black-invert: #2e2a28;
     /* Greys */
     --primary-neutral-grey-lightest: #f9fafb;
     --primary-neutral-grey-lighter: #f3f4f6;
@@ -15,7 +22,7 @@
     --primary-neutral-grey-dark: #cccccc;
     --primary-neutral-grey-darker: #6b7280;
     --primary-hover-color: #3b82f6;
-    --document-hover-color: #f3f4f6;
+    --item-hover-bg: #f3f4f6;
     /* Spacing */
     --spacing-small: 0.5rem;
     --spacing-medium: 1rem;
@@ -23,6 +30,15 @@
     /* Button Component */
     --btn-primary-bg: var(--primary-color);
     --btn-secondary-bg: var(--secondary-color);
+
+
+    /* glass variables */
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --glass-rimlight: rgba(255, 255, 255, 0.296);
+    --glass-background-gradient: linear-gradient(to bottom, #cecece, #9c9c9c);
+    --radius: 0.5rem;
+
   }
 
   [data-theme='dark'] {
@@ -35,6 +51,9 @@
     /* Neutral Colors */
     --primary-neutral-white: #d1d5db;
     --primary-neutral-black: #1a1a1a;
+    /* Inverted Neutral Colors */
+    --white-invert: #1a1a1a;
+    --black-invert: #d1d5db;
     /* Greys */
     --primary-neutral-grey-lightest: #1f2937;
     --primary-neutral-grey-lighter: #222730;
@@ -42,10 +61,16 @@
     --primary-neutral-grey-dark: #6b7280;
     --primary-neutral-grey-darker: #4b5563;
     --primary-hover-color: #60a5fa;
-    --document-hover-color: #4b5563;
+    --item-hover-bg: #4b5563;
     /* Button Component */
     --btn-primary-bg: var(--primary-color);
     --btn-secondary-bg: var(--secondary-color);
+
+    /* glass dark mode */
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-background-gradient: linear-gradient(to bottom, #393939, #111111);
+    --glass-rimlight: rgba(255, 255, 255, 0.16);
+
   }
 
   body {
@@ -68,4 +93,8 @@
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
   }
+}
+
+.chat-modal-button {
+  background-color: var(--primary-color);
 }

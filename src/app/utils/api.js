@@ -1,3 +1,6 @@
+import { nestDocuments } from "./document-helper";
+import { generateRandomString } from "./string-manipulation.js";
+
 export const fetchDocuments = async () => {
     try {
         const response = await fetch('/api/documents');
@@ -11,6 +14,9 @@ export const fetchDocuments = async () => {
 };
 
 export const updateDocument = async (updatedDoc) => {
+    console.log('Updating document:', updatedDoc);
+    const originalPath = updatedDoc.path; // Save the original path
+
     try {
         const response = await fetch(`/api/documents`, {
             method: 'PUT',
@@ -23,6 +29,13 @@ export const updateDocument = async (updatedDoc) => {
             throw new Error('Failed to update document');
         }
         const data = await response.json();
+        console.log('Document updated:', data);
+
+        // Reattach the path and update the last entry with the new title
+        if (originalPath) {
+            data.path = [...originalPath.slice(0, -1), data.title];
+        }
+
         return data;
     } catch (error) {
         console.error('Error updating document:', error);
@@ -33,17 +46,37 @@ export const updateDocument = async (updatedDoc) => {
 export const refreshDocuments = async (setDocuments) => {
     try {
         const data = await fetchDocuments();
-        const nestDocuments = (docs, parentId = null) => {
-            return docs
-                .filter(doc => doc.parent_id === parentId)
-                .map(doc => ({ ...doc, children: nestDocuments(docs, doc.id) }));
-        };
         setDocuments(nestDocuments(data));
     } catch (error) {
         console.error('Error fetching documents:', error);
         alert('Failed to fetch documents. Please try again.');
     }
 };
+
+export function handleNewItem(documents, setDocuments, itemType) {
+    const newDoc = {
+        id: generateRandomString(6),
+        title: `New ${itemType} ${documents.length + 1}`,
+        type: itemType,
+        content: `# New ${itemType}\n\nStart writing here...`,
+        parent_id: null,
+    };
+    fetch("/api/documents", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newDoc),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        setDocuments([...documents, data]);
+        return refreshDocuments(setDocuments); // Refresh documents after adding the new one
+    })
+    .catch((error) => {
+        console.error("Error creating new document:", error);
+    });
+}
 
 export const deleteItem = async (documents, selectedItem, setDocuments, setSelectedItem) => {
     const findChildDocuments = (folderId, docs) => {
