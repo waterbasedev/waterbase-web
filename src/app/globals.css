@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @layer base {
   :root {
     /* Main Colors */
@@ -33,7 +37,8 @@
     --glass-border: rgba(255, 255, 255, 0.3);
     --glass-rimlight: rgba(255, 255, 255, 0.296);
     --glass-background-gradient: linear-gradient(to bottom, #cecece, #9c9c9c);
-    
+    --radius: 0.5rem;
+
   }
 
   [data-theme='dark'] {
@@ -88,4 +93,8 @@
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
   }
+}
+
+.chat-modal-button {
+  background-color: var(--primary-color);
 }

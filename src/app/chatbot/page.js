@@ -3,7 +3,7 @@ import { MyRuntimeProvider } from "@/app/components/MyRuntimeProvider";
 
 const MyApp = () => {
   return (
-    <div>
+    <div className="h-full">
       <MyRuntimeProvider>
         <Thread />
       </MyRuntimeProvider>

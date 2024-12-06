@@ -5,7 +5,7 @@ import "@assistant-ui/react-markdown/styles/markdown.css";
 import { ThemeToggle } from "@/app/components/ThemeToggle";
 import { ThemeProvider } from "next-themes";
 import { MyRuntimeProvider } from "@/app/components/MyRuntimeProvider";
-import { AssistantModal } from "@assistant-ui/react";
+import { MyAssistantModal } from "@/components/assistant-ui/assistant-modal";
 
 export default function RootLayout({ children }) {
   return (
@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
             enableSystem
           >
             <div style={{ zIndex: 9999, position: "relative" }}>
-              <AssistantModal />
+              <MyAssistantModal />
             </div>
             <main>{children}</main>
             <ThemeToggle />
