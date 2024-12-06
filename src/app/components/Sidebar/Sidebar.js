@@ -218,19 +218,19 @@ const Sidebar = ({ documents, setDocuments, setSelectedItem, selectedItem }) => 
       </div>
 
       <button
-        className={styles.newFolderButton}
-        onClick={() => handleNewItem(documents, setDocuments, "folder")}
-      >
-        <Plus size={20} />
-        New Folder
-      </button>
-
-      <button
         className={styles.newDocButton}
         onClick={() => handleNewItem(documents, setDocuments, "document")}
       >
         <Plus size={20} />
         New Document
+      </button>
+
+      <button
+        className={styles.newFolderButton}
+        onClick={() => handleNewItem(documents, setDocuments, "folder")}
+      >
+        <Plus size={20} />
+        New Folder
       </button>
     </div>
   );

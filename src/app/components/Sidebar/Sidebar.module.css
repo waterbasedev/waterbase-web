@@ -1,7 +1,6 @@
 .folder {
     border-radius: 0.25rem;
     cursor: pointer;
-    padding-left: 0.5rem;
     margin-bottom: 0.25rem;
 }
 
@@ -16,8 +15,9 @@
 }
 
 .folderChildren {
-    border-left: 3px solid var(--primary-neutral-grey-dark);
+    border-left: 3px solid var(--black-invert);
     margin-left: 0.75rem;
+    padding-left: 0.5rem;
 }
 
 .sidebarItem {
@@ -31,20 +31,15 @@
     transition: background-color 0.2s;
 }
 
-.folderChildren>.documentItem {
-    padding-left: 0.75rem;
-}
-
 .sidebarItem:hover {
     background-color: var(--item-hover-bg);
-    color: var(--black-invert);
 }
 
 .sidePanel {
     margin: 10px;
     width: 25%;
     min-width: 14rem;
-    max-width: 16rem;
+    max-width: 20rem;
     display: flex;
     flex-direction: column;
     background-color: var(--glass-bg);
@@ -56,9 +51,9 @@
 
 .panelHeader {
     display: flex;
-    flex-direction: row; /* Align elements vertically */
-    align-items: center; /* Center elements horizontally */
-    justify-content: space-between; /* Space elements evenly vertically */
+    flex-direction: row; /* Align elements horizontally */
+    align-items: center; /* Center elements vertically */
+    justify-content: center; /* Center elements horizontally */
     padding: 0.5rem;
     font-size: 26pt;
     font-family: 'Roboto', sans-serif;
@@ -104,8 +99,8 @@
 }
 
 .newDocButton {
-    margin: 0.5rem 1rem;
-    padding: 8px 16px;
+    margin: 1rem;
+    padding: 0.5rem;
     background-color: var(--btn-primary-bg);
     color: var(--primary-neutral-white);
     border: none;
@@ -117,8 +112,9 @@
 }
 
 .newFolderButton {
-    margin: 0.5rem 1rem;
-    padding: 0.5rem 1rem;
+    margin: 1rem;
+    margin-top: 0;
+    padding: 0.5rem;
     background-color: var(--btn-secondary-bg);
     color: var(--primary-neutral-white);
     border: none;

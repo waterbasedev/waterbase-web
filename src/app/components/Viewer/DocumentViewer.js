@@ -80,8 +80,6 @@ export default function DocumentViewer({
           onCancel={handleCancelEdit}
         />
       ) : (
-            console.log("Document in DocumentViewer:", selectedItem.title),
-            console.log("Document path in DocumentViewer:", selectedItem.path),
         <div className={styles.documentContent}>
           <DocumentRenderer
             content={selectedItem.content}
