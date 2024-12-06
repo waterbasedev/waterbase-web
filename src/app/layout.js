@@ -7,6 +7,14 @@ import { ThemeProvider } from "next-themes";
 import { MyRuntimeProvider } from "@/app/components/MyRuntimeProvider";
 import { MyAssistantModal } from "@/components/assistant-ui/assistant-modal";
 
+export const metadata = {
+  title: "WaterBase",
+  description: "Explore the knowledge base",
+  icons: {
+    icon: "/bulb.ico",
+  },
+};
+
 export default function RootLayout({ children }) {
   return (
     <MyRuntimeProvider>
