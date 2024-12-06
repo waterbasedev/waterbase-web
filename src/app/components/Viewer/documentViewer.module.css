@@ -160,6 +160,7 @@
     color: var(--btn-primary-bg);
     text-decoration: underline;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .contextPanel {
