@@ -11,7 +11,7 @@ export const metadata = {
   title: "WaterBase",
   description: "Explore the knowledge base",
   icons: {
-    icon: "/bulb.ico",
+    icon: "/favicon.ico",
   },
 };
 

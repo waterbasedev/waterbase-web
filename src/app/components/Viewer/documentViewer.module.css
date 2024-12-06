@@ -6,7 +6,7 @@
 
     margin: 10px;
     background-color: var(--glass-bg);
-    box-shadow: inset 0 0 20px var(--glass-rimlight);    
+    box-shadow: inset 0 0 20px var(--glass-rimlight);
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     border-radius: 10px;
@@ -172,7 +172,7 @@
     padding: 20px;
     margin-top: 20px;
     background-color: var(--glass-bg);
-    box-shadow: inset 0 0 20px var(--glass-rimlight);    
+    box-shadow: inset 0 0 20px var(--glass-rimlight);
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     border-radius: 10px;
@@ -226,20 +226,22 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-  }
-  
-  .bentoBox {
+}
+
+.bentoBox {
     display: flex;
     flex: 1;
-  }
-  
-  .leftColumn, .rightColumn {
+}
+
+.leftColumn,
+.rightColumn {
     display: flex;
     flex-direction: column;
     width: 50%;
-  }
-  
-  .leftColumn .box, .rightColumn .box {
+}
+
+.leftColumn .box,
+.rightColumn .box {
     flex: 1;
     margin: 10px;
     border: 1px solid var(--glass-border);
@@ -247,38 +249,41 @@
     overflow: hidden;
     background-size: cover;
     position: relative;
-  }
+    height: auto;
+    width: auto;
+}
 
-  .leftColumn .box img, .rightColumn .box img {
+.leftColumn .box img,
+.rightColumn .box img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     position: absolute;
     top: 0;
     left: 0;
-  }
+}
 
-  .bottomRow {
+.bottomRow {
     display: flex;
     justify-content: space-around;
     padding: 10px;
     margin: 10px;
     background-color: var(--glass-bg);
-    box-shadow: inset 0 0 20px var(--glass-rimlight);    
+    box-shadow: inset 0 0 20px var(--glass-rimlight);
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     border-radius: 10px;
-  }
-  
-  .bottomRowButton {
+}
+
+.bottomRowButton {
     padding: 10px 20px;
     background-color: var(--btn-primary-bg);
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  }
-  
-  .bottomRowButton:hover {
+}
+
+.bottomRowButton:hover {
     background-color: var(--primary-hover-color);
-  }
+}
