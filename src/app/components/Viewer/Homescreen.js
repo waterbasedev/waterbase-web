@@ -63,7 +63,7 @@ const HomeScreen = ({ documents, setSelectedItem }) => {
                   Showing total visitors for the last 6 months
                 </CardDescription>
               </CardHeader>
-              <CardContent className="h-72 p-4">
+              <CardContent className="h-56 p-4">
                 <ChartContainer className="h-full" config={chartConfig}>
                   <AreaChart
                     accessibilityLayer
@@ -112,7 +112,7 @@ const HomeScreen = ({ documents, setSelectedItem }) => {
                 <CardTitle>Bar Chart - Multiple</CardTitle>
                 <CardDescription>January - June 2024</CardDescription>
               </CardHeader>
-              <CardContent className="h-72 p-4">
+              <CardContent className="h-56 p-4">
                 <ChartContainer className="h-full" config={chartConfig}>
                   <BarChart accessibilityLayer data={chartData}>
                     <CartesianGrid vertical={false} />
